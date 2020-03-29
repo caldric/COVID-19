@@ -57,7 +57,7 @@ def gif_writer(src, duration=None):
     if duration:
         imageio.mimsave('timeline.gif', gif, duration=duration)
     else:
-        imageio.mimsave('timeline.gif', gif, duration=1)
+        imageio.mimsave('timeline.gif', gif, duration=0.7)
 
 
 if __name__ == '__main__':
