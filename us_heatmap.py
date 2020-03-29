@@ -10,13 +10,14 @@ from plotly.io import write_image
 
 
 def main():
-    infected_data = pd.read_csv(join('data', 'us_infected.csv'))
+    infected_data = pd.read_excel(join('data', 'source.xlsx'), sheet_name='infected_state')
     colors = ['#ffffe5', '#fee391', '#fec44f', '#fe9929', '#ec7014', '#cc4c02', '#993404']
     bins = [0, 5, 50, 100, 500, 1000, 5000]
     normalized_bins = list(map(lambda n: n / bins[-1], bins))
     color_scale = [[normalized_bins[i], colors[i]] for i in range(len(colors))]
 
     infected_data['date'] = pd.to_datetime(infected_data['date'], format='%Y-%m-%d')
+    infected_data = infected_data.loc[infected_data['date'] > '2020-02-29']
     dates = sorted(set(infected_data['date']))
     infected_data_at = {}
     for date in dates:
