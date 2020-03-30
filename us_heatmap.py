@@ -10,12 +10,14 @@ from plotly.io import write_image
 
 
 def main():
-    infected_data = pd.read_excel(join('data', 'source.xlsx'), sheet_name='infected_state')
+    # Establish color scale for choropleth map
     colors = ['#ffffe5', '#fee391', '#fec44f', '#fe9929', '#ec7014', '#cc4c02', '#993404']
     bins = [0, 5, 50, 100, 500, 1000, 5000]
     normalized_bins = list(map(lambda n: n / bins[-1], bins))
     color_scale = [[normalized_bins[i], colors[i]] for i in range(len(colors))]
 
+    # Data variables
+    infected_data = pd.read_excel(join('data', 'source.xlsx'), sheet_name='infected_state')
     infected_data['date'] = pd.to_datetime(infected_data['date'], format='%Y-%m-%d')
     infected_data = infected_data.loc[infected_data['date'] > '2020-02-29']
     dates = sorted(set(infected_data['date']))
@@ -23,6 +25,7 @@ def main():
     for date in dates:
         infected_data_at[date] = infected_data.loc[infected_data['date'] == date].reset_index()
 
+    # Create PNG files of the figure for each day and store in 'images' directory
     if not os.path.exists('images'):
         os.mkdir('images')
 
@@ -49,6 +52,7 @@ def main():
 
 
 def gif_writer(src, duration=None):
+    """Combines images from src directory into one GIF"""
     paths = sorted([join(src, file) for file in os.listdir(src) if file != '.DS_Store'])
     gif = []
     for path in paths:
