@@ -19,7 +19,6 @@ def main():
     # Data variables
     infected_data = pd.read_excel(join('data', 'source.xlsx'), sheet_name='infected_state')
     infected_data['date'] = pd.to_datetime(infected_data['date'], format='%Y-%m-%d')
-    infected_data = infected_data.loc[infected_data['date'] > '2020-02-29']
     dates = sorted(set(infected_data['date']))
     infected_data_at = {}
     for date in dates:
@@ -32,6 +31,12 @@ def main():
     for i in range(len(dates)):
         data = infected_data_at[dates[i]]
         path = join('images', 'fig{}.png'.format(str(i).zfill(2)))
+        total_cases = sum(data['infected_count'])
+        if i > 0:
+            new_cases = total_cases - sum(infected_data_at[dates[i - 1]]['infected_count'])
+        else:
+            new_cases = 0
+
         fig = go.Figure(data=go.Choropleth(
             locations=data['state_code'],
             z=data['infected_count'],
@@ -43,7 +48,7 @@ def main():
         ))
         fig.update_layout(
             title_text='<b>COVID-19 US Infected</b><br>Confirmed cases as of ' + dates[i].strftime('%B %d, %Y')
-                       + '<br>Total cases: ' + '{:,}'.format(sum(data['infected_count'])),
+            + '<br>Total cases: ' + '{:,}<br>New cases: {:,}'.format(total_cases, new_cases),
             geo=dict(scope='usa')
         )
         write_image(fig, path, format='png')
@@ -61,7 +66,7 @@ def gif_writer(src, duration=None):
     if duration:
         imageio.mimsave('timeline.gif', gif, duration=duration)
     else:
-        imageio.mimsave('timeline.gif', gif, duration=0.7)
+        imageio.mimsave('timeline.gif', gif, duration=0.5)
 
 
 if __name__ == '__main__':
