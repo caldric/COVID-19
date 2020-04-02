@@ -30,7 +30,7 @@ def main():
 
     for i in range(len(dates)):
         data = infected_data_at[dates[i]]
-        path = join('images', 'fig{}.png'.format(str(i).zfill(2)))
+        path = join('images', '{}.png'.format(dates[i].strftime('%Y-%m-%d')))
         total_cases = sum(data['infected_count'])
         if i > 0:
             new_cases = total_cases - sum(infected_data_at[dates[i - 1]]['infected_count'])
