@@ -1,9 +1,11 @@
 # Import required modules
+import io
 import os
 
 import imageio
 import pandas as pd
 import plotly.graph_objects as go
+import requests
 
 from os.path import join
 from plotly.io import write_image
@@ -17,8 +19,9 @@ def main():
     color_scale = [[normalized_bins[i], colors[i]] for i in range(len(colors))]
 
     # Data variables
-    infected_data = pd.read_excel(join('data', 'source.xlsx'), sheet_name='infected_state')
-    infected_data['date'] = pd.to_datetime(infected_data['date'], format='%Y-%m-%d')
+    url = 'https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/' \
+          + 'csse_covid_19_time_series/time_series_covid19_confirmed_US.csv'
+    infected_data = wrangle_data(url)
     dates = sorted(set(infected_data['date']))
     infected_data_at = {}
     for date in dates:
@@ -67,6 +70,36 @@ def gif_writer(src, duration=None):
         imageio.mimsave('timeline.gif', gif, duration=duration)
     else:
         imageio.mimsave('timeline.gif', gif, duration=0.5)
+
+
+def wrangle_data(url):
+    # Lookup data
+    us_state_codes = pd.read_csv(join('data', 'us_state_codes.csv'))
+    us_state_coordinates = pd.read_csv(join('data', 'us_state_coordinates.csv'))
+    us_state_lookups = pd.merge(us_state_codes, us_state_coordinates, on=['state'], how='inner')
+
+    content = requests.get(url).content
+    raw_data = pd.read_csv(io.StringIO(content.decode('utf-8')))
+
+    # Data wrangling
+    # remove unneeded columns
+    infected_data = raw_data.drop(
+        ['UID', 'iso2', 'iso3', 'code3', 'FIPS', 'Admin2', 'Country_Region', 'Lat', 'Long_', 'Combined_Key'], axis=1
+    )
+    # rename state column
+    infected_data = infected_data.rename({'Province_State': 'state'}, axis=1)
+    # group by state
+    infected_data = infected_data.groupby(['state']).sum().reset_index()
+    # unpivot date columns
+    infected_data = infected_data.melt(id_vars=['state'], var_name='date', value_name='infected_count')
+    # transform date column from str to datetime
+    infected_data['date'] = pd.to_datetime(infected_data['date'], format='%m/%d/%y')
+    # merge state codes and coordinates to infected data
+    infected_data = pd.merge(infected_data, us_state_lookups, on=['state'], how='right')
+    # rearrange columns
+    infected_data = infected_data[['state', 'state_code', 'latitude', 'longitude', 'date', 'infected_count']]
+
+    return infected_data
 
 
 if __name__ == '__main__':
