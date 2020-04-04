@@ -1,6 +1,8 @@
-*.swp
-data_transformation_steps.xlsx
-.idea
 .DS_Store
-*.ipynb
+.idea
 archive
+
+plot.py
+
+*.swp
+*.ipynb
