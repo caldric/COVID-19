@@ -123,18 +123,26 @@ def project(population, initial, days, infection_rate, recovery_rate, observed_i
     # Plot data
     fig2 = plt.figure()
     fig2.set_size_inches(10, 5)
+    ax = plt.gca()
+
     plt.semilogy(t, susceptible, 'k-', label='susceptible')
     plt.semilogy(t, infected, 'r-', label='infected')
     plt.semilogy(t, recovered, 'b-', label='recovered')
-    # plt.plot(t, susceptible, 'k-', label='susceptible')
-    # plt.plot(t, infected, 'r-', label='infected')
-    # plt.plot(t, recovered, 'b-', label='recovered')
+
+    # notable points
+    plt.semilogy(t[-1], susceptible[-1], 'ko')
+    ax.annotate('{:,}'.format(int(round(susceptible[-1]))), (t[-1] - 20, susceptible[-1] * 1.50), ha='center')
+    t_max_infected = np.where(infected == max(infected))[0][0]
+    plt.semilogy(t_max_infected, max(infected), 'ro')
+    ax.annotate('{:,}'.format(int(round(max(infected)))), (t_max_infected + 20, 1e8))
+    plt.semilogy(t[-1], infected[-1], 'ro')
+    ax.annotate('{:,}'.format(int(round(infected[-1]))), (t[-1], 5), ha='center')
+
     plt.legend(loc='best')
     plt.xlabel('time (days since 22 Jan 2020)')
     plt.ylabel('count')
     plt.title('Count vs. Time')
 
-    ax = plt.gca()
     ax.get_yaxis().set_major_formatter(plt.FuncFormatter(lambda x, loc: "{:,}".format(int(x))))
     plt.savefig('projection.png')
     plt.show()
