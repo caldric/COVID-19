@@ -6,7 +6,8 @@ import requests
 
 from io import StringIO
 from os.path import join
-from gekko import GEKKO
+from scipy.integrate import odeint
+from scipy.optimize import minimize
 
 
 def main():
@@ -18,44 +19,119 @@ def main():
     infected_data = infected_data.sort_index()
     infected_data = np.array(infected_data)
 
-    # Model
-    model = GEKKO()
-    model.time = np.array(range(len(infected_data)))
-
-    # Parameters
+    # Population data
     total_us_population = 328_239_523
-    initial_infected = 1
-    initial_susceptible = total_us_population - initial_infected
+    initial = {
+        'recovered': 0,
+        'infected': infected_data[0],
+        'susceptible': total_us_population - infected_data[0]
+    }
 
+    # Input parameters
     recovery_rate = 1 / 19.6
-    infection_rate = model.FV(value=0.1, lb=0, ub=1)
-    infection_rate.STATUS = 1
 
-    # Variables
-    susceptible = model.Var(value=initial_susceptible)
-    infected = model.Var(value=initial_infected)
-    recovered = model.Var(value=0)
+    # Solver
+    estimated_infection_rate = solver(
+        func=objective, population=total_us_population, initial=initial, observed_infected=infected_data,
+        recovery_rate=recovery_rate
+    )
 
-    observed = model.Param(value=infected_data)
+    # Projection
+    project(
+        population=total_us_population, initial=initial, days=500, infection_rate=estimated_infection_rate,
+        recovery_rate=recovery_rate, observed_infected=infected_data
+    )
 
-    # System of ordinary differential equations: SIR model
-    model.Equation(susceptible.dt() == -infection_rate * infected * susceptible / total_us_population)
-    model.Equation(
-        infected.dt() == infection_rate * infected * susceptible / total_us_population - recovery_rate * infected)
-    model.Equation(recovered.dt() == recovery_rate * infected)
 
-    # Objective function
-    model.Obj((observed - infected) ** 2)
+def sir_model(z, t, beta, gamma, n):
+    s, i, r = z
+    ds_dt = -beta * i * s / n
+    di_dt = beta * i * s / n - gamma * i
+    dr_dt = gamma * i
 
-    model.options.IMODE = 6
-    model.solve()
+    return [ds_dt, di_dt, dr_dt]
 
-    plt.figure(1)
-    plt.plot(model.time, infected.value, 'r:', label='infected')
-    plt.plot(model.time, observed.value, 'bo', label='observed')
+
+def objective(infection_rate, population, initial, observed_infected, recovery_rate):
+    # Time points
+    t = np.array(range(len(observed_infected)))
+
+    # Store initial conditions
+    initial_values = [initial['susceptible'], initial['infected'], initial['recovered']]
+
+    # Solve ODE
+    compartments = odeint(sir_model, initial_values, t, args=(infection_rate, recovery_rate, population))
+    infected = compartments[:, 1]
+
+    observed = observed_infected
+    estimated = infected
+
+    return sum((observed - estimated) ** 2)
+
+
+def solver(func, population, initial, observed_infected, recovery_rate):
+    # Time points
+    t = np.array(range(len(observed_infected)))
+
+    # Solve for best fitting infection rate
+    initial_infection_rate = 0.2
+    solution = minimize(
+        func, initial_infection_rate, args=(population, initial, observed_infected, recovery_rate)
+    )
+    estimated_infection_rate = solution.x[0]
+
+    # Store initial conditions
+    initial_values = [initial['susceptible'], initial['infected'], initial['recovered']]
+
+    # Solve ODE
+    compartments = odeint(sir_model, initial_values, t, args=(estimated_infection_rate, recovery_rate, population))
+    infected = compartments[:, 1]
+    r0 = estimated_infection_rate / recovery_rate
+
+    # Plot data
+    fig = plt.figure()
+    plt.plot(t, infected, 'r-', label='estimated')
+    plt.plot(t, observed_infected, 'bo', label='observed')
     plt.legend(loc='best')
     plt.xlabel('time (days since 22 Jan 2020)')
     plt.ylabel('infected count')
+    plt.title(r'Count vs. Time $(\beta={}, R_0={})$'.format(round(estimated_infection_rate, 4), round(r0, 1)))
+
+    ax = plt.gca()
+    ax.get_yaxis().set_major_formatter(plt.FuncFormatter(lambda x, loc: "{:,}".format(int(x))))
+    plt.show()
+
+    return estimated_infection_rate
+
+
+def project(population, initial, days, infection_rate, recovery_rate, observed_infected=None):
+    # Time points
+    t = np.array(range(days))
+
+    # Store initial conditions
+    initial_values = [initial['susceptible'], initial['infected'], initial['recovered']]
+
+    # Solve ODE
+    compartments = odeint(sir_model, initial_values, t, args=(infection_rate, recovery_rate, population))
+    susceptible = compartments[:, 0]
+    infected = compartments[:, 1]
+    recovered = compartments[:, 2]
+
+    # Plot data
+    fig = plt.figure()
+    plt.semilogy(t, susceptible, 'k-', label='susceptible')
+    plt.semilogy(t, infected, 'r-', label='infected')
+    plt.semilogy(t, recovered, 'b-', label='recovered')
+    # plt.plot(t, susceptible, 'k-', label='susceptible')
+    # plt.plot(t, infected, 'r-', label='infected')
+    # plt.plot(t, recovered, 'b-', label='recovered')
+    plt.legend(loc='best')
+    plt.xlabel('time (days since 22 Jan 2020)')
+    plt.ylabel('count')
+    plt.title('Count vs. Time')
+
+    ax = plt.gca()
+    ax.get_yaxis().set_major_formatter(plt.FuncFormatter(lambda x, loc: "{:,}".format(int(x))))
     plt.show()
 
 
