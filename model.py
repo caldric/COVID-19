@@ -89,8 +89,8 @@ def solver(func, population, initial, observed_infected, recovery_rate):
     r0 = estimated_infection_rate / recovery_rate
 
     # Plot data
-    fig = plt.figure()
-    fig.set_size_inches(10, 5)
+    fig1 = plt.figure()
+    fig1.set_size_inches(10, 5)
     plt.plot(t, infected, 'r-', label='estimated')
     plt.plot(t, observed_infected, 'bo', label='observed')
     plt.legend(loc='best')
@@ -100,8 +100,9 @@ def solver(func, population, initial, observed_infected, recovery_rate):
 
     ax = plt.gca()
     ax.get_yaxis().set_major_formatter(plt.FuncFormatter(lambda x, loc: "{:,}".format(int(x))))
+    plt.savefig('fit.png')
     plt.show()
-    fig.savefig('fit.eps')
+    plt.close()
 
     return estimated_infection_rate
 
@@ -120,8 +121,8 @@ def project(population, initial, days, infection_rate, recovery_rate, observed_i
     recovered = compartments[:, 2]
 
     # Plot data
-    fig = plt.figure()
-    fig.set_size_inches(10, 5)
+    fig2 = plt.figure()
+    fig2.set_size_inches(10, 5)
     plt.semilogy(t, susceptible, 'k-', label='susceptible')
     plt.semilogy(t, infected, 'r-', label='infected')
     plt.semilogy(t, recovered, 'b-', label='recovered')
@@ -135,8 +136,9 @@ def project(population, initial, days, infection_rate, recovery_rate, observed_i
 
     ax = plt.gca()
     ax.get_yaxis().set_major_formatter(plt.FuncFormatter(lambda x, loc: "{:,}".format(int(x))))
+    plt.savefig('projection.png')
     plt.show()
-    fig.savefig('projection.eps')
+    plt.close()
 
 
 def wrangle_data(url):
