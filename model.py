@@ -57,6 +57,13 @@ def sir_model(z, t, beta, gamma, n):
     return [ds_dt, di_dt, dr_dt]
 
 
+def r_squared(observed, estimated):
+    """Returns r-squared value"""
+    total_sum_of_squares = sum((observed - observed.mean()) ** 2)
+    residual_sum_of_squares = sum((observed - estimated) ** 2)
+    return 1 - residual_sum_of_squares / total_sum_of_squares
+
+
 def objective(infection_rate, population, initial, observed_infected, recovery_rate):
     # Time points
     t = np.array(range(len(observed_infected)))
@@ -101,7 +108,9 @@ def solver(func, population, initial, observed_infected, recovery_rate, start_da
     plt.legend(loc='best')
     plt.xlabel('time (days since {})'.format(start_date.strftime('%d %b %Y')))
     plt.ylabel('infected count')
-    plt.title(r'Count vs. Time $(\beta={}, R_0={})$'.format(round(estimated_infection_rate, 4), round(r0, 1)))
+    plt.title(r'Count vs. Time $(\beta={}, R_0={}, r^2={})$'.format(
+        round(estimated_infection_rate, 4), round(r0, 1), round(r_squared(observed_infected, infected), 4)
+    ))
 
     ax = plt.gca()
     ax.get_yaxis().set_major_formatter(plt.FuncFormatter(lambda x, loc: "{:,}".format(int(x))))
