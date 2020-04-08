@@ -12,19 +12,22 @@ from scipy.optimize import minimize
 
 def main():
     # Data variables
-    url = 'https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/' \
+    infected_url = 'https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/' \
           + 'csse_covid_19_time_series/time_series_covid19_confirmed_US.csv'
-    infected_data = wrangle_data(url)
-    infected_data = infected_data.groupby('date')['infected_count'].sum()
+    infected_data = wrangle_data(infected_url)
+    infected_data = infected_data.groupby('date')['count'].sum()
     infected_data = infected_data.sort_index()
+    infected_data = infected_data[70:]
+    start_date = infected_data.index[0]
     infected_data = np.array(infected_data)
 
     # Population data
     total_us_population = 328_239_523
+    initial_recovered = 8_474
     initial = {
-        'recovered': 0,
+        'recovered': initial_recovered,
         'infected': infected_data[0],
-        'susceptible': total_us_population - infected_data[0]
+        'susceptible': total_us_population - infected_data[0] - initial_recovered
     }
 
     # Input parameters
@@ -33,13 +36,13 @@ def main():
     # Solver
     estimated_infection_rate = solver(
         func=objective, population=total_us_population, initial=initial, observed_infected=infected_data,
-        recovery_rate=recovery_rate
+        recovery_rate=recovery_rate, start_date=start_date
     )
 
     # Projection
     project(
         population=total_us_population, initial=initial, days=500, infection_rate=estimated_infection_rate,
-        recovery_rate=recovery_rate, observed_infected=infected_data
+        recovery_rate=recovery_rate, start_date=start_date
     )
 
 
@@ -69,7 +72,7 @@ def objective(infection_rate, population, initial, observed_infected, recovery_r
     return sum((observed - estimated) ** 2)
 
 
-def solver(func, population, initial, observed_infected, recovery_rate):
+def solver(func, population, initial, observed_infected, recovery_rate, start_date):
     # Time points
     t = np.array(range(len(observed_infected)))
 
@@ -94,7 +97,7 @@ def solver(func, population, initial, observed_infected, recovery_rate):
     plt.plot(t, infected, 'r-', label='estimated')
     plt.plot(t, observed_infected, 'bo', label='observed')
     plt.legend(loc='best')
-    plt.xlabel('time (days since 22 Jan 2020)')
+    plt.xlabel('time (days since {})'.format(start_date.strftime('%d %b %Y')))
     plt.ylabel('infected count')
     plt.title(r'Count vs. Time $(\beta={}, R_0={})$'.format(round(estimated_infection_rate, 4), round(r0, 1)))
 
@@ -107,7 +110,7 @@ def solver(func, population, initial, observed_infected, recovery_rate):
     return estimated_infection_rate
 
 
-def project(population, initial, days, infection_rate, recovery_rate, observed_infected=None):
+def project(population, initial, days, infection_rate, recovery_rate, start_date):
     # Time points
     t = np.array(range(days))
 
@@ -139,7 +142,7 @@ def project(population, initial, days, infection_rate, recovery_rate, observed_i
     ax.annotate('{:,}'.format(int(round(infected[-1]))), (t[-1], 5), ha='center')
 
     plt.legend(loc='best')
-    plt.xlabel('time (days since 22 Jan 2020)')
+    plt.xlabel('time (days since {})'.format(start_date.strftime('%d %b %Y')))
     plt.ylabel('count')
     plt.title('Count vs. Time')
 
@@ -160,23 +163,23 @@ def wrangle_data(url):
 
     # Data wrangling
     # remove unneeded columns
-    infected_data = raw_data.drop(
+    data = raw_data.drop(
         ['UID', 'iso2', 'iso3', 'code3', 'FIPS', 'Admin2', 'Country_Region', 'Lat', 'Long_', 'Combined_Key'], axis=1
     )
     # rename state column
-    infected_data = infected_data.rename({'Province_State': 'state'}, axis=1)
+    data = data.rename({'Province_State': 'state'}, axis=1)
     # group by state
-    infected_data = infected_data.groupby(['state']).sum().reset_index()
+    data = data.groupby(['state']).sum().reset_index()
     # unpivot date columns
-    infected_data = infected_data.melt(id_vars=['state'], var_name='date', value_name='infected_count')
+    data = data.melt(id_vars=['state'], var_name='date', value_name='count')
     # transform date column from str to datetime
-    infected_data['date'] = pd.to_datetime(infected_data['date'], format='%m/%d/%y')
+    data['date'] = pd.to_datetime(data['date'], format='%m/%d/%y')
     # merge state codes and coordinates to infected data
-    infected_data = pd.merge(infected_data, us_state_lookups, on=['state'], how='right')
+    data = pd.merge(data, us_state_lookups, on=['state'], how='right')
     # rearrange columns
-    infected_data = infected_data[['state', 'state_code', 'latitude', 'longitude', 'date', 'infected_count']]
+    data = data[['state', 'state_code', 'latitude', 'longitude', 'date', 'count']]
 
-    return infected_data
+    return data
 
 
 if __name__ == '__main__':
