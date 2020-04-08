@@ -23,7 +23,9 @@ def main():
 
     # Population data
     total_us_population = 328_239_523
-    initial_recovered = 8_474
+    recovered_url = 'https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/' \
+        + 'csse_covid_19_time_series/time_series_covid19_recovered_global.csv'
+    initial_recovered = get_recovered(recovered_url, start_date)
     initial = {
         'recovered': initial_recovered,
         'infected': infected_data[0],
@@ -180,6 +182,30 @@ def wrangle_data(url):
     data = data[['state', 'state_code', 'latitude', 'longitude', 'date', 'count']]
 
     return data
+
+
+def get_recovered(url, start_date):
+    # Obtain source data
+    content = requests.get(url).content
+    raw_data = pd.read_csv(StringIO(content.decode('utf-8')))
+
+    # Data wrangling
+    # filter for country: US
+    data = raw_data[raw_data['Country/Region'] == 'US']
+    # remove unneeded rows
+    data = data.drop(['Province/State', 'Lat', 'Long'], axis=1)
+    # rename country column name
+    data = data.rename({'Country/Region': 'country'}, axis=1)
+    # unpivot data
+    data = data.melt(id_vars=['country'], var_name='date', value_name='count')
+    # transform date column to type datetime
+    data['date'] = pd.to_datetime(data['date'], format='%m/%d/%y')
+    # filter only for the start_date
+    data = data[data['date'] == start_date]
+    # obtain recovered count
+    count = int(data['count'])
+
+    return count
 
 
 if __name__ == '__main__':
