@@ -154,7 +154,7 @@ def project(population, initial, days, infection_rate, recovery_rate, start_date
     plt.semilogy(t_max_infected, max(infected), 'ro')
     ax.annotate('{:,}'.format(int(round(max(infected)))), (t_max_infected + 20, 1e8))
     plt.semilogy(t[-1], infected[-1], 'ro')
-    ax.annotate('{:,}'.format(int(round(infected[-1]))), (t[-1], 5), ha='center')
+    ax.annotate('{:,}'.format(int(round(infected[-1]))), (t[-1], 30), ha='center')
 
     plt.legend(loc='best')
     plt.xlabel('time (days since {})'.format(start_date.strftime('%d %b %Y')))
