@@ -17,7 +17,7 @@ def main():
     infected_data = get_infected(infected_url)
     infected_data = infected_data.groupby('date')['count'].sum()
     infected_data = infected_data.sort_index()
-    infected_data = infected_data[-10:]
+    infected_data = infected_data[-7:]
     start_date = infected_data.index[0]
     infected_data = np.array(infected_data)
 
@@ -27,7 +27,8 @@ def main():
     # Initial recovered population
     recovered_url = 'https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/' \
         + 'csse_covid_19_time_series/time_series_covid19_recovered_global.csv'
-    initial_recovered = get_initial_recovered(recovered_url, start_date)
+    recovered_data = get_recovered(recovered_url, start_date)
+    initial_recovered = recovered_data['count'].iloc[0]
 
     # Intial population values
     initial = {
@@ -192,11 +193,12 @@ def get_infected(url):
     data = pd.merge(data, us_state_lookups, on=['state'], how='right')
     # rearrange columns
     data = data[['state', 'state_code', 'latitude', 'longitude', 'date', 'count']]
+    data = data.sort_values(by='date')
 
     return data
 
 
-def get_initial_recovered(url, start_date):
+def get_recovered(url, start_date):
     # Obtain source data
     content = requests.get(url).content
     raw_data = pd.read_csv(StringIO(content.decode('utf-8')))
@@ -213,11 +215,10 @@ def get_initial_recovered(url, start_date):
     # transform date column to type datetime
     data['date'] = pd.to_datetime(data['date'], format='%m/%d/%y')
     # filter only for the start_date
-    data = data[data['date'] == start_date]
-    # obtain recovered count
-    count = int(data['count'])
+    data = data[data['date'] >= start_date]
+    data = data.sort_values(by='date')
 
-    return count
+    return data
 
 
 if __name__ == '__main__':
