@@ -11,21 +11,25 @@ from scipy.optimize import minimize
 
 
 def main():
-    # Data variables
+    # Infected population
     infected_url = 'https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/' \
           + 'csse_covid_19_time_series/time_series_covid19_confirmed_US.csv'
-    infected_data = wrangle_data(infected_url)
+    infected_data = get_infected(infected_url)
     infected_data = infected_data.groupby('date')['count'].sum()
     infected_data = infected_data.sort_index()
-    infected_data = infected_data[70:]
+    infected_data = infected_data[-10:]
     start_date = infected_data.index[0]
     infected_data = np.array(infected_data)
 
-    # Population data
+    # Total population
     total_us_population = 328_239_523
+
+    # Initial recovered population
     recovered_url = 'https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/' \
         + 'csse_covid_19_time_series/time_series_covid19_recovered_global.csv'
-    initial_recovered = get_recovered(recovered_url, start_date)
+    initial_recovered = get_initial_recovered(recovered_url, start_date)
+
+    # Intial population values
     initial = {
         'recovered': initial_recovered,
         'infected': infected_data[0],
@@ -53,7 +57,6 @@ def sir_model(z, t, beta, gamma, n):
     ds_dt = -beta * i * s / n
     di_dt = beta * i * s / n - gamma * i
     dr_dt = gamma * i
-
     return [ds_dt, di_dt, dr_dt]
 
 
@@ -86,7 +89,7 @@ def solver(func, population, initial, observed_infected, recovery_rate, start_da
     t = np.array(range(len(observed_infected)))
 
     # Solve for best fitting infection rate
-    initial_infection_rate = 0.2
+    initial_infection_rate = 0.15
     solution = minimize(
         func, initial_infection_rate, args=(population, initial, observed_infected, recovery_rate)
     )
@@ -163,7 +166,7 @@ def project(population, initial, days, infection_rate, recovery_rate, start_date
     plt.close()
 
 
-def wrangle_data(url):
+def get_infected(url):
     # Lookup data
     us_state_codes = pd.read_csv(join('data', 'us_state_codes.csv'))
     us_state_coordinates = pd.read_csv(join('data', 'us_state_coordinates.csv'))
@@ -193,7 +196,7 @@ def wrangle_data(url):
     return data
 
 
-def get_recovered(url, start_date):
+def get_initial_recovered(url, start_date):
     # Obtain source data
     content = requests.get(url).content
     raw_data = pd.read_csv(StringIO(content.decode('utf-8')))
