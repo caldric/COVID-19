@@ -67,9 +67,9 @@ def gif_writer(src, duration=None):
         gif.append(imageio.imread(path))
 
     if duration:
-        imageio.mimsave('timeline.gif', gif, duration=duration)
+        imageio.mimsave('timeline_state.gif', gif, duration=duration)
     else:
-        imageio.mimsave('timeline.gif', gif, duration=0.5)
+        imageio.mimsave('timeline_state.gif', gif, duration=0.5)
 
 
 def wrangle_data(url):
