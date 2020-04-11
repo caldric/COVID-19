@@ -3,6 +3,7 @@
 archive
 
 plot.py
+model_oh.py
 
 *.swp
 *.ipynb
