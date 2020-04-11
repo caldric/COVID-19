@@ -4,7 +4,7 @@ import os
 
 import imageio
 import pandas as pd
-import plotly.graph_objects as go
+import plotly.figure_factory as ff
 import requests
 
 from os.path import join
@@ -14,9 +14,7 @@ from plotly.io import write_image
 def main():
     # Establish color scale for choropleth map
     colors = ['#ffffe5', '#fee391', '#fec44f', '#fe9929', '#ec7014', '#cc4c02', '#993404', '#662506']
-    bins = [0, 1, 6, 51, 101, 501, 1001, 5001]
-    normalized_bins = list(map(lambda n: n / bins[-1], bins))
-    color_scale = [[normalized_bins[i], colors[i]] for i in range(len(colors))]
+    bins = [5, 50, 100, 500, 1000, 5000]
 
     # Data variables
     url = 'https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/' \
@@ -27,36 +25,31 @@ def main():
     for date in dates:
         infected_data_at[date] = infected_data.loc[infected_data['date'] == date].reset_index()
 
-    # Create PNG files of the figure for each day and store in 'images' directory
-    if not os.path.exists('images'):
-        os.mkdir('images')
+    # Create PNG files of the figure for each day and store in 'images_county' directory
+    if not os.path.exists('images_county'):
+        os.mkdir('images_county')
 
     for i in range(len(dates)):
         data = infected_data_at[dates[i]]
-        path = join('images', '{}.png'.format(dates[i].strftime('%Y-%m-%d')))
-        total_cases = sum(data['infected_count'])
-        if i > 0:
-            new_cases = total_cases - sum(infected_data_at[dates[i - 1]]['infected_count'])
-        else:
-            new_cases = 0
+        path = join('images_county', '{}.png'.format(dates[i].strftime('%Y-%m-%d')))
 
-        fig = go.Figure(data=go.Choropleth(
-            locations=data['state_code'],
-            z=data['infected_count'],
-            locationmode='USA-states',
-            zmin=0, zmax=bins[-1],
-            colorscale=color_scale,
-            autocolorscale=False,
-            marker_line_color='black'
-        ))
+        fig = ff.create_choropleth(
+            fips=data['fips'],
+            values=data['count'],
+            binning_endpoints=bins,
+            colorscale=colors,
+            show_state_data=True,
+            show_hover=True,
+            centroid_marker={'opacity': 0},
+            asp=2.9
+        )
         fig.update_layout(
-            title_text='<b>COVID-19 US Infected</b><br>Confirmed cases as of ' + dates[i].strftime('%B %d, %Y')
-            + '<br>Total cases: ' + '{:,}<br>New cases: {:,}'.format(total_cases, new_cases),
+            title_text=dates[i].strftime('%B %d, %Y'),
             geo=dict(scope='usa')
         )
         write_image(fig, path, format='png')
 
-    gif_writer('images')
+    gif_writer('images_county')
 
 
 def gif_writer(src, duration=None):
@@ -67,37 +60,30 @@ def gif_writer(src, duration=None):
         gif.append(imageio.imread(path))
 
     if duration:
-        imageio.mimsave('timeline.gif', gif, duration=duration)
+        imageio.mimsave('timeline_county.gif', gif, duration=duration)
     else:
-        imageio.mimsave('timeline.gif', gif, duration=0.5)
+        imageio.mimsave('timeline_county.gif', gif, duration=0.5)
 
 
 def wrangle_data(url):
-    # Lookup data
-    us_state_codes = pd.read_csv(join('data', 'us_state_codes.csv'))
-    us_state_coordinates = pd.read_csv(join('data', 'us_state_coordinates.csv'))
-    us_state_lookups = pd.merge(us_state_codes, us_state_coordinates, on=['state'], how='inner')
-
     content = requests.get(url).content
     raw_data = pd.read_csv(io.StringIO(content.decode('utf-8')))
 
     # Data wrangling
     # remove unneeded columns
     infected_data = raw_data.drop(
-        ['UID', 'iso2', 'iso3', 'code3', 'FIPS', 'Admin2', 'Country_Region', 'Lat', 'Long_', 'Combined_Key'], axis=1
+        columns=['UID', 'iso2', 'iso3', 'code3', 'Admin2', 'Province_State', 'Country_Region', 'Combined_Key']
     )
-    # rename state column
-    infected_data = infected_data.rename({'Province_State': 'state'}, axis=1)
-    # group by state
-    infected_data = infected_data.groupby(['state']).sum().reset_index()
+    # rename columns
+    infected_data = infected_data.rename(columns={'FIPS': 'fips', 'Lat': 'lat', 'Long_': 'long'})
+    # remove rows with null fips and coordinates
+    infected_data = infected_data[(infected_data['fips'].notnull() & infected_data['lat'] != 0)]
+    # standardize the fips
+    infected_data['fips'] = infected_data['fips'].apply(lambda code: str(int(code)).zfill(5))
     # unpivot date columns
-    infected_data = infected_data.melt(id_vars=['state'], var_name='date', value_name='infected_count')
-    # transform date column from str to datetime
+    infected_data = infected_data.melt(id_vars=['fips', 'lat', 'long'], var_name='date', value_name='count')
+    # convert date strings to datetime objects
     infected_data['date'] = pd.to_datetime(infected_data['date'], format='%m/%d/%y')
-    # merge state codes and coordinates to infected data
-    infected_data = pd.merge(infected_data, us_state_lookups, on=['state'], how='right')
-    # rearrange columns
-    infected_data = infected_data[['state', 'state_code', 'latitude', 'longitude', 'date', 'infected_count']]
 
     return infected_data
 
