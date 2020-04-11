@@ -1,8 +1,12 @@
 # COVID-19
 
-## Choropleth Map
+## Choropleth Map (State)
 
-<p align="center"><img src="https://raw.githubusercontent.com/caldric/COVID-19/master/timeline.gif" alt="US choropleth map of confirmed COVID-19 infected")</p>
+<p align="center"><img src="https://raw.githubusercontent.com/caldric/COVID-19/master/timeline_state.gif" alt="US state choropleth map of confirmed COVID-19 infected")</p>
+  
+## Choropleth Map (County)
+
+<p align="center"><img src="https://raw.githubusercontent.com/caldric/COVID-19/master/timeline_county.gif" alt="US county choropleth map of confirmed COVID-19 infected")</p>
   
 ## Projection
 
