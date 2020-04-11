@@ -39,6 +39,7 @@ def main():
 
     # Input parameters
     recovery_rate = 1 / 19.6
+    # recovery_rate = 1 / 7
 
     # Solver
     estimated_infection_rate = solver(
@@ -112,8 +113,9 @@ def solver(func, population, initial, observed_infected, recovery_rate, start_da
     plt.legend(loc='best')
     plt.xlabel('time (days since {})'.format(start_date.strftime('%d %b %Y')))
     plt.ylabel('infected count')
-    plt.title(r'Count vs. Time $(\beta={}, R_0={}, r^2={})$'.format(
-        round(estimated_infection_rate, 4), round(r0, 1), round(r_squared(observed_infected, infected), 4)
+    plt.title(r'Count vs. Time $(\beta={}, \gamma={}, R_0={}, r^2={})$'.format(
+        round(estimated_infection_rate, 4), round(recovery_rate, 4), round(r0, 1),
+        round(r_squared(observed_infected, infected), 4)
     ))
 
     ax = plt.gca()
@@ -137,6 +139,7 @@ def project(population, initial, days, infection_rate, recovery_rate, start_date
     susceptible = compartments[:, 0]
     infected = compartments[:, 1]
     recovered = compartments[:, 2]
+    r0 = infection_rate / recovery_rate
 
     # Plot data
     fig2 = plt.figure()
@@ -149,17 +152,21 @@ def project(population, initial, days, infection_rate, recovery_rate, start_date
 
     # notable points
     plt.semilogy(t[-1], susceptible[-1], 'ko')
-    ax.annotate('{:,}'.format(int(round(susceptible[-1]))), (t[-1] - 20, susceptible[-1] * 1.50), ha='center')
+    ax.annotate('{:,}'.format(
+        int(round(susceptible[-1]))), (t[-1] - 20, 10 ** (np.log10(susceptible[-1]) + 0.15)), ha='center'
+    )
     t_max_infected = np.where(infected == max(infected))[0][0]
     plt.semilogy(t_max_infected, max(infected), 'ro')
-    ax.annotate('{:,}'.format(int(round(max(infected)))), (t_max_infected + 20, 1e8))
+    ax.annotate('{:,}'.format(int(round(max(infected)))), (t_max_infected + 20, 10 ** (np.log10(max(infected)) + 0.05)))
     plt.semilogy(t[-1], infected[-1], 'ro')
-    ax.annotate('{:,}'.format(int(round(infected[-1]))), (t[-1], 30), ha='center')
+    ax.annotate('{:,}'.format(int(round(infected[-1]))), (t[-1], 10 ** (np.log10(infected[-1]) + 0.2)), ha='center')
 
     plt.legend(loc='best')
     plt.xlabel('time (days since {})'.format(start_date.strftime('%d %b %Y')))
     plt.ylabel('count')
-    plt.title('Count vs. Time')
+    plt.title(r'Count vs. Time $(\beta={}, \gamma={}, R_0={})$'.format(
+        round(infection_rate, 4), round(recovery_rate, 4), round(r0, 1)
+    ))
 
     ax.get_yaxis().set_major_formatter(plt.FuncFormatter(lambda x, loc: "{:,}".format(int(x))))
     plt.savefig('projection.png')
