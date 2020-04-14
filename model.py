@@ -157,7 +157,7 @@ def project(population, initial, days, infection_rate, recovery_rate, start_date
     )
     t_max_infected = np.where(infected == max(infected))[0][0]
     plt.semilogy(t_max_infected, max(infected), 'ro')
-    ax.annotate('{:,}'.format(int(round(max(infected)))), (t_max_infected + 20, 10 ** (np.log10(max(infected)) + 0.05)))
+    ax.annotate('{:,}'.format(int(round(max(infected)))), (t_max_infected, 10 ** (np.log10(max(infected)) - 0.50)), ha='center')
     plt.semilogy(t[-1], infected[-1], 'ro')
     ax.annotate('{:,}'.format(int(round(infected[-1]))), (t[-1], 10 ** (np.log10(infected[-1]) + 0.2)), ha='center')
 
