@@ -2,7 +2,7 @@
 
 ## Choropleth Map (State)
 
-<p align="center"><img src="https://raw.githubusercontent.com/caldric/COVID-19/master/images/timeline_state.gif" alt="US state choropleth map of confirmed COVID-19 infected")</p>
+<p align="center"><img src="https://raw.githubusercontent.com/caldric/COVID-19/master/images/state_timeline.gif" alt="US state choropleth map of confirmed COVID-19 infected")</p>
   
 ## Choropleth Map (County)
 
