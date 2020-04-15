@@ -121,7 +121,7 @@ def solver(func, population, initial, observed_infected, recovery_rate, start_da
 
     ax = plt.gca()
     ax.get_yaxis().set_major_formatter(plt.FuncFormatter(lambda x, loc: "{:,}".format(int(x))))
-    plt.savefig('fit.png')
+    plt.savefig('images/fit.png')
     plt.show()
     plt.close()
 
@@ -170,7 +170,7 @@ def project(population, initial, days, infection_rate, recovery_rate, start_date
     ))
 
     ax.get_yaxis().set_major_formatter(plt.FuncFormatter(lambda x, loc: "{:,}".format(int(x))))
-    plt.savefig('projection.png')
+    plt.savefig('images/projection.png')
     plt.show()
     plt.close()
 
