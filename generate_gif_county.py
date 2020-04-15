@@ -25,13 +25,13 @@ def main():
     for date in dates:
         infected_data_at[date] = infected_data.loc[infected_data['date'] == date].reset_index()
 
-    # Create PNG files of the figure for each day and store in 'images_county' directory
-    if not os.path.exists('images_county'):
-        os.mkdir('images_county')
+    # Create PNG files of the figure for each day and store in 'images/county_timeline' directory
+    if not os.path.exists('images/county_timeline'):
+        os.mkdir('images/county_timeline')
 
     for i in range(len(dates)):
         data = infected_data_at[dates[i]]
-        path = join('images_county', '{}.png'.format(dates[i].strftime('%Y-%m-%d')))
+        path = join('images/county_timeline', '{}.png'.format(dates[i].strftime('%Y-%m-%d')))
 
         fig = ff.create_choropleth(
             fips=data['fips'],
@@ -49,7 +49,7 @@ def main():
         )
         write_image(fig, path, format='png')
 
-    gif_writer('images_county')
+    gif_writer('images/county_timeline')
 
 
 def gif_writer(src, duration=None):
@@ -60,9 +60,9 @@ def gif_writer(src, duration=None):
         gif.append(imageio.imread(path))
 
     if duration:
-        imageio.mimsave('timeline_county.gif', gif, duration=duration)
+        imageio.mimsave('images/county_timeline.gif', gif, duration=duration)
     else:
-        imageio.mimsave('timeline_county.gif', gif, duration=0.5)
+        imageio.mimsave('images/county_timeline.gif', gif, duration=0.5)
 
 
 def wrangle_data(url):
