@@ -27,13 +27,13 @@ def main():
     for date in dates:
         infected_data_at[date] = infected_data.loc[infected_data['date'] == date].reset_index()
 
-    # Create PNG files of the figure for each day and store in 'images_state' directory
-    if not os.path.exists('images_state'):
-        os.mkdir('images_state')
+    # Create PNG files of the figure for each day and store in 'images/state_timeline' directory
+    if not os.path.exists('images/state_timeline'):
+        os.mkdir('images/state_timeline')
 
     for i in range(len(dates)):
         data = infected_data_at[dates[i]]
-        path = join('images_state', '{}.png'.format(dates[i].strftime('%Y-%m-%d')))
+        path = join('images/state_timeline', '{}.png'.format(dates[i].strftime('%Y-%m-%d')))
         total_cases = sum(data['infected_count'])
         if i > 0:
             new_cases = total_cases - sum(infected_data_at[dates[i - 1]]['infected_count'])
@@ -56,7 +56,7 @@ def main():
         )
         write_image(fig, path, format='png')
 
-    gif_writer('images_state')
+    gif_writer('images/state_timeline')
 
 
 def gif_writer(src, duration=None):
@@ -67,9 +67,9 @@ def gif_writer(src, duration=None):
         gif.append(imageio.imread(path))
 
     if duration:
-        imageio.mimsave('timeline_state.gif', gif, duration=duration)
+        imageio.mimsave('images/state_timeline.gif', gif, duration=duration)
     else:
-        imageio.mimsave('timeline_state.gif', gif, duration=0.5)
+        imageio.mimsave('images/state_timeline.gif', gif, duration=0.5)
 
 
 def wrangle_data(url):
