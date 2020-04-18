@@ -13,8 +13,8 @@ from plotly.io import write_image
 
 def main():
     # Establish color scale for choropleth map
-    colors = ['#ffffe5', '#fee391', '#fec44f', '#fe9929', '#ec7014', '#cc4c02', '#993404', '#662506']
-    bins = [0, 1, 6, 51, 101, 501, 1001, 5001]
+    colors = ['#ffffe5', '#fee391', '#fec44f', '#fe9929', '#ec7014', '#993404']
+    bins = [0, 1, 100, 1000, 5000, 10_000]
     normalized_bins = list(map(lambda n: n / bins[-1], bins))
     color_scale = [[normalized_bins[i], colors[i]] for i in range(len(colors))]
 
