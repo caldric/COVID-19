@@ -39,7 +39,7 @@ def main():
 
     # Input parameters
     # recovery_rate = 1 / 19.6
-    recovery_rate = 1 / 7
+    recovery_rate = 1 / 6
     # recovery_rate = 1 / 4
 
     # Solver
