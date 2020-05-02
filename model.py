@@ -50,7 +50,7 @@ def main():
 
     # Projection
     project(
-        population=total_us_population, initial=initial, days=400, infection_rate=estimated_infection_rate,
+        population=total_us_population, initial=initial, days=500, infection_rate=estimated_infection_rate,
         recovery_rate=recovery_rate, start_date=start_date
     )
 
