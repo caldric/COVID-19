@@ -47,7 +47,7 @@ def main():
             zmin=0, zmax=bins[-1],
             colorscale=color_scale,
             autocolorscale=False,
-            marker_line_color='black'
+            marker_line_color='white'
         ))
         fig.update_layout(
             title_text='<b>COVID-19 US Infected</b><br>Confirmed cases as of ' + dates[i].strftime('%B %d, %Y')
