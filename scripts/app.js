@@ -1,30 +1,35 @@
-const confirmedURL = 'https://raw.githubusercontent.com/CSSEGISandData/'
-  + 'COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/'
-  + 'time_series_covid19_confirmed_US.csv';
+// URLs
+const timeSeriesURL = 'https://raw.githubusercontent.com/CSSEGISandData/'
+  + 'COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/';
+const confirmedURL = timeSeriesURL + 'time_series_covid19_confirmed_US.csv';
+const deathsURL = timeSeriesURL + 'time_series_covid19_deaths_US.csv';
 
-let confirmedData;
+// Data variables
+const latestDate = '6/15/20';
+const data = {};
 
-console.log(confirmedURL);
-
-Papa.parse(confirmedURL, {
+// Functions
+const getData = (url, category) => Papa.parse(url, {
   download: true,
   header: true,
   complete: csv => {
-    confirmedData = csv.data;
-    console.log(csv.data);
-    const objKeys = Object.keys(csv.data[0]);
-    console.log(objKeys[objKeys.length - 1]);
-
-    // console.log(csv.data[0]['6/15/20']);
-    let totalInfected = 0;
-    for (let row of csv.data) {
-      if (typeof row['6/15/20'] == 'string') {
-        totalInfected += parseInt(row['6/15/20']);
-      }
-    }
-    console.log(totalInfected);
+    data[category] = csv.data;
   }
 });
 
+const getTotalConfirmed = (confirmedArr) => {
+  let totalConfirmed = 0;
+  for (let row of confirmedArr) {
+    if (typeof row[latestDate] == 'string') {
+      let confirmedCount = parseInt(row[latestDate]);
+      totalConfirmed += confirmedCount;
+    }
+  }
+  return totalConfirmed;
+};
+
 $(() => {
+  getData(confirmedURL, 'confirmed');
+  console.log(data.confirmed);
+  console.log(getTotalConfirmed(data.confirmed));
 });
