@@ -1,5 +1,5 @@
 // URLs
-const confirmedCurrent = 'https://covidtracking.com/api/v1/states/current.json';
+const currentURL = 'https://covidtracking.com/api/v1/states/current.json';
 
 // Functions
 const getData = (apiURL) => $.ajax(apiURL);
@@ -10,9 +10,22 @@ const getCount = (arr, attr) => {
   return total;
 };
 
+const createSummary = (confirmedCount, deathsCount) => {
+  const $summaryDiv = $('#summary');
+  $summaryDiv.addClass('card');
+
+  const $confirmedHeader = $('<h2>').text('Total Confirmed');
+  const $confirmedCount = $('<p>').text(confirmedCount);
+  const $deathsHeader = $('<h2>').text('Total Deaths');
+  const $deathsCount = $('<p>').text(deathsCount);
+
+  $summaryDiv.append($confirmedHeader, $confirmedCount, $deathsHeader, $deathsCount);
+};
+
 $(() => {
-  getData(confirmedCurrent).then((jsonData) => {
-    const totalCurrentPositive = getCount(jsonData, 'positive');
-    console.log(totalCurrentPositive);
+  getData(currentURL).then((jsonData) => {
+    const currentConfirmed = getCount(jsonData, 'positive');
+    const currentDeaths = getCount(jsonData, 'death');
+    createSummary(currentConfirmed, currentDeaths);
   });
 });
