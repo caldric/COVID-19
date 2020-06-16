@@ -5,7 +5,7 @@ const confirmedCurrent = 'https://covidtracking.com/api/v1/states/current.json';
 const data = {};
 
 // Functions
-const getData = () => $.ajax({url: confirmedCurrent}).then((theData) => {
+const getData = (apiURL) => $.ajax({url: apiURL}).then((theData) => {
   console.log(theData);
   console.log(theData instanceof Array);
   console.log(getCount(theData, 'positive'));
@@ -18,5 +18,5 @@ const getCount = (arr, attr) => {
 };
 
 $(() => {
-  getData();
+  getData(confirmedCurrent);
 });
