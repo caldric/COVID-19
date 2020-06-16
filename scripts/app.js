@@ -13,9 +13,7 @@ const getData = () => $.ajax({url: confirmedCurrent}).then((theData) => {
 
 const getCount = (arr) => {
   let total = 0;
-  for (let row of arr) {
-    total += row.positive;
-  }
+  arr.forEach(row => total += row.positive);
   return total;
 };
 
