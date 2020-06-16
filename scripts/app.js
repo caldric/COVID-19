@@ -17,19 +17,21 @@ const getData = (url, category) => Papa.parse(url, {
   }
 });
 
-const getTotalConfirmed = (confirmedArr) => {
-  let totalConfirmed = 0;
-  for (let row of confirmedArr) {
+const getCount = (arr) => {
+  let total = 0;
+  for (let row of arr) {
     if (typeof row[latestDate] == 'string') {
       let confirmedCount = parseInt(row[latestDate]);
-      totalConfirmed += confirmedCount;
+      total += confirmedCount;
     }
   }
-  return totalConfirmed;
+  return total;
 };
 
 $(() => {
   getData(confirmedURL, 'confirmed');
+  getData(deathsURL, 'deaths');
+
   console.log(data.confirmed);
-  console.log(getTotalConfirmed(data.confirmed));
+  console.log(getCount(data.confirmed));
 });
