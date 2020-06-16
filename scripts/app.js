@@ -1,9 +1,6 @@
 // URLs
 const confirmedCurrent = 'https://covidtracking.com/api/v1/states/current.json';
 
-// Data variables
-const data = {};
-
 // Functions
 const getData = (apiURL) => $.ajax(apiURL);
 
@@ -15,7 +12,7 @@ const getCount = (arr, attr) => {
 
 $(() => {
   getData(confirmedCurrent).then((jsonData) => {
-    data.positive = jsonData;
-    console.log(data.positive);
+    const totalCurrentPositive = getCount(jsonData, 'positive');
+    console.log(totalCurrentPositive);
   });
 });
