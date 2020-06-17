@@ -78,6 +78,10 @@ const extractRelevantData = (jsonData, states, targetKeys) => {
   });
 };
 
+String.prototype.toTitleCase = function() {
+  return this[0].toUpperCase() + this.slice(1);
+};
+
 
 // DOM functions
 const createSummary = (confirmedCount, deathsCount) => {
@@ -95,20 +99,20 @@ const createSummary = (confirmedCount, deathsCount) => {
   $targetDiv.append($confirmedHeader, $confirmedCount, $deathsHeader, $deathsCount);
 };
 
-const createConfirmedByState = (states) => {
+const createAttrByState = (states, $target, targetKey, description) => {
   // Locate target
-  const $targetDiv = $('#confirmed-by-state');
+  const $targetDiv = $target;
   $targetDiv.addClass('card');
 
   // Generate header content
-  const $header = $('<h2>').text('Confirmed by State');
+  const $header = $('<h2>').text(`${description.toTitleCase()} by State`);
   $targetDiv.append($header);
 
   // Generate data by state in descending order
   sortedStates = JSON.parse(JSON.stringify(states));
   sortedStates = states.sort((a, b) => b.positive - a.positive);
   sortedStates.forEach(state => {
-    const $newItem = $('<p>').text(`${state.name}: ${state.positive}`);
+    const $newItem = $('<p>').text(`${state.name}: ${state[targetKey]}`);
     $targetDiv.append($newItem);
   });
 };
@@ -126,6 +130,9 @@ $(() => {
     createSummary(currentConfirmed, currentDeaths);
 
     // Card 2: Confirmed by State
-    createConfirmedByState(states);
+    createAttrByState(states, $('#confirmed-by-state'), 'positive', 'confirmed');
+
+    // Card 3: Deaths by State
+    createAttrByState(states, $('#deaths-by-state'), 'death', 'deaths');
   });
 });
