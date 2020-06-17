@@ -89,12 +89,21 @@ const createSummary = (confirmedCount, deathsCount) => {
   $summaryDiv.append($confirmedHeader, $confirmedCount, $deathsHeader, $deathsCount);
 };
 
-// const createConfirmedByState = () => {
-//   const $targetDiv = $('#confirmed-by-state');
-//   $targetDiv.addClass('card');
-//   const $header = $('<h2>').text('Confirmed by State');
-//   $targetDiv.append($header);
-// };
+const createConfirmedByState = (states) => {
+  const $targetDiv = $('#confirmed-by-state');
+  $targetDiv.addClass('card');
+
+  const $header = $('<h2>').text('Confirmed by State');
+  $targetDiv.append($header);
+
+  sortedStates = JSON.parse(JSON.stringify(states));
+  sortedStates = states.sort((a, b) => b.positive - a.positive);
+  console.log(sortedStates);
+  sortedStates.forEach(state => {
+    const $newItem = $('<p>').text(`${state.name}: ${state.positive}`);
+    $targetDiv.append($newItem);
+  });
+};
 
 $(() => {
   getData(currentURL).then((jsonData) => {
@@ -108,5 +117,6 @@ $(() => {
     createSummary(currentConfirmed, currentDeaths);
 
     // Card 2
+    createConfirmedByState(states);
   });
 });
