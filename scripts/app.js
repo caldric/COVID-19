@@ -94,6 +94,10 @@ const createSummary = (confirmedCount, deathsCount) => {
   const $targetDiv = $('#summary');
   $targetDiv.addClass('card');
 
+  // Convert numbers to comma-separated numbers
+  confirmedCount = addCommaSeparator(confirmedCount);
+  deathsCount = addCommaSeparator(deathsCount);
+
   // Generate content
   const $confirmedHeader = $('<h2>').text('Total Confirmed');
   const $confirmedCount = $('<p>').text(confirmedCount);
@@ -117,7 +121,8 @@ const createAttrByState = (states, $target, targetKey, description) => {
   sortedStates = JSON.parse(JSON.stringify(states));
   sortedStates = states.sort((a, b) => b.positive - a.positive);
   sortedStates.forEach(state => {
-    const $newItem = $('<p>').text(`${state.name}: ${state[targetKey]}`);
+    const value = addCommaSeparator(state[targetKey]);
+    const $newItem = $('<p>').text(`${state.name}: ${value}`);
     $targetDiv.append($newItem);
   });
 };
