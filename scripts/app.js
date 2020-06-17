@@ -78,15 +78,15 @@ const extractRelevantData = (jsonData, states, targetKeys) => {
 
 // DOM functions
 const createSummary = (confirmedCount, deathsCount) => {
-  const $summaryDiv = $('#summary');
-  $summaryDiv.addClass('card');
+  const $targetDiv = $('#summary');
+  $targetDiv.addClass('card');
 
   const $confirmedHeader = $('<h2>').text('Total Confirmed');
   const $confirmedCount = $('<p>').text(confirmedCount);
   const $deathsHeader = $('<h2>').text('Total Deaths');
   const $deathsCount = $('<p>').text(deathsCount);
 
-  $summaryDiv.append($confirmedHeader, $confirmedCount, $deathsHeader, $deathsCount);
+  $targetDiv.append($confirmedHeader, $confirmedCount, $deathsHeader, $deathsCount);
 };
 
 const createConfirmedByState = (states) => {
@@ -98,7 +98,6 @@ const createConfirmedByState = (states) => {
 
   sortedStates = JSON.parse(JSON.stringify(states));
   sortedStates = states.sort((a, b) => b.positive - a.positive);
-  console.log(sortedStates);
   sortedStates.forEach(state => {
     const $newItem = $('<p>').text(`${state.name}: ${state.positive}`);
     $targetDiv.append($newItem);
