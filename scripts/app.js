@@ -125,7 +125,7 @@ $(() => {
     const currentDeaths = getTotalCount(jsonData, 'death');
     createSummary(currentConfirmed, currentDeaths);
 
-    // Card 2
+    // Card 2: Confirmed by State
     createConfirmedByState(states);
   });
 });
