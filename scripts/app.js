@@ -159,5 +159,11 @@ $(() => {
       $('#model'), 'SIR Model', './images/projection.png',
       'SIR model for COVID-19'
     );
+
+    // Card: SIR model fit
+    createImgCard(
+      $('#model-fit'), 'SIR Model Fit', './images/fit.png',
+      'SIR model fit for COVID-19'
+    );
   });
 });
