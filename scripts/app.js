@@ -148,10 +148,16 @@ $(() => {
     // Card 3: Deaths by State
     createAttrByState(states, $('#deaths-by-state'), 'death', 'deaths');
 
-    // Card 4: Choropleth Map
+    // Card: Choropleth Map
     createImgCard(
       $('#choropleth-map'), 'Choropleth Map', './images/state_timeline.gif',
       'US choropleth map of confirmed COVID-19 cases'
+    );
+
+    // Card: SIR Model
+    createImgCard(
+      $('#model'), 'SIR Model', './images/projection.png',
+      'SIR model for COVID-19'
     );
   });
 });
