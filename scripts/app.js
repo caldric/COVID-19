@@ -82,6 +82,11 @@ String.prototype.toTitleCase = function() {
   return this[0].toUpperCase() + this.slice(1);
 };
 
+const addCommaSeparator = (num) => {
+  // Orignal source: https://bit.ly/3fvdMWD
+  return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+};
+
 
 // DOM functions
 const createSummary = (confirmedCount, deathsCount) => {
