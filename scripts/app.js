@@ -117,17 +117,17 @@ const createAttrByState = (states, $target, targetKey, description) => {
   });
 };
 
-const createChoroplethMap = () => {
+const createImgCard = ($target, headerText, imgSrc='', imgAlt='') => {
   // Locate target
-  const $targetDiv = $('#choropleth-map');
+  const $targetDiv = $target;
   $targetDiv.addClass('card');
 
-  const $header = $('<h2>').text('Choropleth Map');
-  const $choroplethMap = $('<img>').attr('src', './images/state_timeline.gif');
-  console.log($choroplethMap.attr('src'));
-  $choroplethMap.attr('alt', 'US choropleth map of confirmed COVID-19 cases');
+  const $header = $('<h2>').text(headerText);
+  const $img = $('<img>').attr('src', imgSrc);
+  console.log($img.attr('src'));
+  $img.attr('alt', imgAlt);
 
-  $targetDiv.append($header, $choroplethMap);
+  $targetDiv.append($header, $img);
 };
 
 
@@ -149,6 +149,9 @@ $(() => {
     createAttrByState(states, $('#deaths-by-state'), 'death', 'deaths');
 
     // Card 4: Choropleth Map
-    createChoroplethMap();
+    createImgCard(
+      $('#choropleth-map'), 'Choropleth Map', './images/state_timeline.gif',
+      'US choropleth map of confirmed COVID-19 cases'
+    );
   });
 });
