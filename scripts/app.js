@@ -45,7 +45,7 @@ const states = [
   {name: 'Tennessee', code: 'TN'},
   {name: 'Texas', code: 'TX'},
   {name: 'Utah', code: 'UT'},
-  {name: 'Vermont', code: 'TV'},
+  {name: 'Vermont', code: 'VT'},
   {name: 'Virginia', code: 'VA'},
   {name: 'Washington', code: 'WA'},
   {name: 'West Virginia', code: 'WV'},
@@ -77,10 +77,35 @@ const createSummary = (confirmedCount, deathsCount) => {
   $summaryDiv.append($confirmedHeader, $confirmedCount, $deathsHeader, $deathsCount);
 };
 
+const createConfirmedByState = () => {
+  const $targetDiv = $('#confirmed-by-state');
+  $targetDiv.addClass('card');
+
+  const $header = $('<h2>').text('Confirmed by State');
+
+  $targetDiv.append($header);
+};
+
 $(() => {
   getData(currentURL).then((jsonData) => {
+    for (const state of states) {
+      const filteredData = jsonData.filter(row => row.state == state.code);
+      if (filteredData.length == 1) {
+        state.positive = filteredData[0].positive;
+        state.death = filteredData[0].death;
+      } else {
+        state.positive = null;
+        state.death = null;
+      }
+    }
+
+    console.log(states);
+
+    // Card 1: Summary Data
     const currentConfirmed = getCount(jsonData, 'positive');
     const currentDeaths = getCount(jsonData, 'death');
     createSummary(currentConfirmed, currentDeaths);
+
+    // Card 2
   });
 });
