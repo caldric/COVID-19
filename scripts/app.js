@@ -129,7 +129,6 @@ const createImgCard = ($target, headerText, imgSrc='', imgAlt='') => {
 
   const $header = $('<h2>').text(headerText);
   const $img = $('<img>').attr('src', imgSrc);
-  console.log($img.attr('src'));
   $img.attr('alt', imgAlt);
 
   $targetDiv.append($header, $img);
