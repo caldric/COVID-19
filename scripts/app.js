@@ -53,8 +53,10 @@ const states = [
   {name: 'Wyoming', code: 'WY'}
 ];
 
+
 // URLs
 const currentURL = 'https://covidtracking.com/api/v1/states/current.json';
+
 
 // General functions
 const getData = (apiURL) => $.ajax(apiURL);
@@ -76,26 +78,33 @@ const extractRelevantData = (jsonData, states, targetKeys) => {
   });
 };
 
+
 // DOM functions
 const createSummary = (confirmedCount, deathsCount) => {
+  // Locate target
   const $targetDiv = $('#summary');
   $targetDiv.addClass('card');
 
+  // Generate content
   const $confirmedHeader = $('<h2>').text('Total Confirmed');
   const $confirmedCount = $('<p>').text(confirmedCount);
   const $deathsHeader = $('<h2>').text('Total Deaths');
   const $deathsCount = $('<p>').text(deathsCount);
 
+  // Add content to DOM
   $targetDiv.append($confirmedHeader, $confirmedCount, $deathsHeader, $deathsCount);
 };
 
 const createConfirmedByState = (states) => {
+  // Locate target
   const $targetDiv = $('#confirmed-by-state');
   $targetDiv.addClass('card');
 
+  // Generate header content
   const $header = $('<h2>').text('Confirmed by State');
   $targetDiv.append($header);
 
+  // Generate data by state in descending order
   sortedStates = JSON.parse(JSON.stringify(states));
   sortedStates = states.sort((a, b) => b.positive - a.positive);
   sortedStates.forEach(state => {
@@ -103,6 +112,7 @@ const createConfirmedByState = (states) => {
     $targetDiv.append($newItem);
   });
 };
+
 
 $(() => {
   getData(currentURL).then((jsonData) => {
