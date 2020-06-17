@@ -61,7 +61,7 @@ const currentURL = 'https://covidtracking.com/api/v1/states/current.json';
 // General functions
 const getData = (apiURL) => $.ajax(apiURL);
 
-const getCount = (arr, attr) => {
+const getTotalCount = (arr, attr) => {
   let total = 0;
   arr.forEach(row => total += row[attr]);
   return total;
@@ -121,8 +121,8 @@ $(() => {
     extractRelevantData(jsonData, states, relevantFields);
 
     // Card 1: Summary Data
-    const currentConfirmed = getCount(jsonData, 'positive');
-    const currentDeaths = getCount(jsonData, 'death');
+    const currentConfirmed = getTotalCount(jsonData, 'positive');
+    const currentDeaths = getTotalCount(jsonData, 'death');
     createSummary(currentConfirmed, currentDeaths);
 
     // Card 2
