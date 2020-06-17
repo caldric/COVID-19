@@ -56,7 +56,7 @@ const states = [
 // URLs
 const currentURL = 'https://covidtracking.com/api/v1/states/current.json';
 
-// Functions
+// General functions
 const getData = (apiURL) => $.ajax(apiURL);
 
 const getCount = (arr, attr) => {
@@ -65,6 +65,18 @@ const getCount = (arr, attr) => {
   return total;
 };
 
+const extractRelevantData = (jsonData, states, targetKeys) => {
+  states.forEach(state => {
+    const jsonState = jsonData.filter(row => row.state == state.code);
+    if (jsonState.length == 1) {
+      targetKeys.forEach(field => state[field] = jsonState[0][field]);
+    } else {
+      targetKeys.forEach(field => state[field] = null);
+    }
+  });
+};
+
+// DOM functions
 const createSummary = (confirmedCount, deathsCount) => {
   const $summaryDiv = $('#summary');
   $summaryDiv.addClass('card');
@@ -77,29 +89,18 @@ const createSummary = (confirmedCount, deathsCount) => {
   $summaryDiv.append($confirmedHeader, $confirmedCount, $deathsHeader, $deathsCount);
 };
 
-const createConfirmedByState = () => {
-  const $targetDiv = $('#confirmed-by-state');
-  $targetDiv.addClass('card');
-
-  const $header = $('<h2>').text('Confirmed by State');
-
-  $targetDiv.append($header);
-};
+// const createConfirmedByState = () => {
+//   const $targetDiv = $('#confirmed-by-state');
+//   $targetDiv.addClass('card');
+//   const $header = $('<h2>').text('Confirmed by State');
+//   $targetDiv.append($header);
+// };
 
 $(() => {
   getData(currentURL).then((jsonData) => {
-    for (const state of states) {
-      const filteredData = jsonData.filter(row => row.state == state.code);
-      if (filteredData.length == 1) {
-        state.positive = filteredData[0].positive;
-        state.death = filteredData[0].death;
-      } else {
-        state.positive = null;
-        state.death = null;
-      }
-    }
-
-    console.log(states);
+    // Extract relevant data
+    const relevantFields = ['positive', 'death'];
+    extractRelevantData(jsonData, states, relevantFields);
 
     // Card 1: Summary Data
     const currentConfirmed = getCount(jsonData, 'positive');
