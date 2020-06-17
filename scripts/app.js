@@ -117,6 +117,19 @@ const createAttrByState = (states, $target, targetKey, description) => {
   });
 };
 
+const createChoroplethMap = () => {
+  // Locate target
+  const $targetDiv = $('#choropleth-map');
+  $targetDiv.addClass('card');
+
+  const $header = $('<h2>').text('Choropleth Map');
+  const $choroplethMap = $('<img>').attr('src', './images/state_timeline.gif');
+  console.log($choroplethMap.attr('src'));
+  $choroplethMap.attr('alt', 'US choropleth map of confirmed COVID-19 cases');
+
+  $targetDiv.append($header, $choroplethMap);
+};
+
 
 $(() => {
   getData(currentURL).then((jsonData) => {
@@ -134,5 +147,8 @@ $(() => {
 
     // Card 3: Deaths by State
     createAttrByState(states, $('#deaths-by-state'), 'death', 'deaths');
+
+    // Card 4: Choropleth Map
+    createChoroplethMap();
   });
 });
