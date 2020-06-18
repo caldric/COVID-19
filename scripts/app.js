@@ -79,7 +79,7 @@ const extractRelevantData = (jsonData, states, targetKeys) => {
 };
 
 String.prototype.toTitleCase = function() {
-  return this[0].toUpperCase() + this.slice(1);
+  return this[0].toUpperCase() + this.slice(1).toLowerCase();
 };
 
 const addCommaSeparator = (num) => {
