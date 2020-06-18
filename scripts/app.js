@@ -112,6 +112,7 @@ const createAttrByState = (states, $target, targetKey, description) => {
   // Locate target
   const $targetDiv = $target;
   $targetDiv.addClass('card');
+  $targetDiv.addClass('attr-by-state');
 
   // Generate header content
   const $header = $('<h2>').text(`${description.toTitleCase()} by State`);
