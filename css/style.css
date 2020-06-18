@@ -51,7 +51,7 @@ img {
   margin: 0 auto;
   position: absolute;
   background: white;
-  width: calc(100% - 14px);
+  width: calc(100% - 12px);
 }
 
 .attr-by-state .content {
@@ -60,4 +60,48 @@ img {
 
 .attr-by-state h2 {
   padding: 10px 0;
+}
+
+@media (min-width: 1000px) {
+  main {
+    display: flex;
+    justify-content: center;
+  }
+
+  #left {
+    width: 20vw;
+  }
+
+  #summary {
+    min-height: 20vh;
+  }
+
+  .attr-by-state {
+    height: calc(35vh - 6px);
+  }
+
+  .attr-by-state .header{
+    width: calc(20vw - 30px);
+  }
+
+  .attr-by-state h2 {
+    width: calc(20vw - 30px);
+  }
+
+  #middle {
+    width: 50vw;
+  }
+
+  #choropleth-map {
+    min-width: calc(50vw - 2px);
+    min-height: calc(90vh + 12px);
+  }
+
+  #right {
+    width: 30vw;
+  }
+
+  #model, #model-fit {
+    height: 45vh;
+  }
 }
