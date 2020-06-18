@@ -55,5 +55,9 @@ img {
 }
 
 .attr-by-state .content {
-  padding-top: 40px;
+  padding-top: 50px;
+}
+
+.attr-by-state h2 {
+  padding: 10px 0;
 }
