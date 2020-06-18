@@ -115,17 +115,21 @@ const createAttrByState = (states, $target, targetKey, description) => {
   $targetDiv.addClass('attr-by-state');
 
   // Generate header content
+  const $headerDiv = $('<div>').addClass('header');
   const $header = $('<h2>').text(`${description.toTitleCase()} by State`);
-  $targetDiv.append($header);
+  $headerDiv.append($header);
+  $targetDiv.append($headerDiv);
 
   // Generate data by state in descending order
+  const $contentDiv = $('<div>').addClass('content');
   sortedStates = JSON.parse(JSON.stringify(states));
   sortedStates = states.sort((a, b) => b.positive - a.positive);
   sortedStates.forEach(state => {
     const value = addCommaSeparator(state[targetKey]);
     const $newItem = $('<p>').text(`${state.name}: ${value}`);
-    $targetDiv.append($newItem);
+    $contentDiv.append($newItem);
   });
+  $targetDiv.append($contentDiv);
 };
 
 const createImgCard = ($target, headerText, imgSrc='', imgAlt='') => {

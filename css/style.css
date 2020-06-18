@@ -39,8 +39,16 @@ p {
   padding: 0 5px;
 }
 
-.attr-by-state h2 {
-  margin: 10px 0;
+.attr-by-state .header {
+  margin: 0;
+  position: absolute;
+  width: 95vw;
+  background: white;
+  padding: 5px 0;
+}
+
+.attr-by-state .content {
+  padding-top: 40px;
 }
 
 .attr-by-state p {
