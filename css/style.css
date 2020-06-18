@@ -15,7 +15,7 @@ h2 {
 }
 
 p {
-  margin: 0 0 10px 10px;
+  margin: 0 10px 10px 10px;
 }
 
 img {
@@ -62,7 +62,7 @@ img {
   padding: 10px 0;
 }
 
-@media (min-width: 1000px) {
+@media (min-width: 1200px) {
   main {
     display: flex;
     justify-content: center;
