@@ -1,3 +1,4 @@
+/* General styling */
 body {
   font-family: sans-serif;
   margin: 0;
@@ -18,11 +19,13 @@ p {
   margin: 0;
 }
 
+/* General styling for cards */
 .card {
   border: 1px solid black;
   margin: 0 5px 10px;
 }
 
+/* Card: Summary */
 #summary {
   text-align: center;
   font-size: 1.5em;
@@ -33,6 +36,7 @@ p {
   margin-bottom: 10px;
 }
 
+/* Card: Confirmed/Deaths by State */
 .attr-by-state {
   max-height: 80vh;
   overflow: auto;
