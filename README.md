@@ -2,7 +2,7 @@
 
 ## Overview
 
-A COVID-19 [dashboard]() built using HTML, CSS, JavaScript, and jQuery.
+A COVID-19 [dashboard](https://caldric.github.io/COVID-19/) built using HTML, CSS, JavaScript, and jQuery.
 
 ## Data Sources
 
