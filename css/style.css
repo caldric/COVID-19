@@ -10,6 +10,12 @@ h1 {
 
 h2 {
   font-size: 1.1em;
+  margin: 0;
+  margin-top: 5px;
+}
+
+p {
+  margin: 0;
 }
 
 .card {
@@ -22,13 +28,7 @@ h2 {
   font-size: 1.5em;
 }
 
-#summary h2 {
-  margin: 0;
-  margin-top: 10px;
-}
-
 #summary p {
   font-size: 1.8em;
-  margin: 0;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 }
