@@ -32,3 +32,17 @@ p {
   font-size: 1.8em;
   margin-bottom: 10px;
 }
+
+.attr-by-state {
+  max-height: 80vh;
+  overflow: auto;
+  padding: 0 5px;
+}
+
+.attr-by-state h2 {
+  margin: 10px 0;
+}
+
+.attr-by-state p {
+  margin: 0 0 5px 5px;
+}
