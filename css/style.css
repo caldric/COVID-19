@@ -68,6 +68,7 @@ img {
     justify-content: center;
   }
 
+  /* Left section */
   #left {
     width: 20vw;
   }
@@ -88,6 +89,7 @@ img {
     width: calc(20vw - 30px);
   }
 
+  /* Middle section */
   #middle {
     width: 50vw;
   }
@@ -97,6 +99,7 @@ img {
     min-height: calc(90vh + 12px);
   }
 
+  /* Right section */
   #right {
     width: 30vw;
   }
