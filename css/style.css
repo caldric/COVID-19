@@ -1,0 +1,116 @@
+:root {
+  --desktop-left-width: 20vw;
+  --desktop-center-width: 45vw;
+  --desktop-right-width: 35vw;
+}
+
+/* General styling */
+body {
+  font-family: sans-serif;
+  margin: 0;
+}
+
+h1 {
+  font-size: 1.2em;
+  margin: 15px 5px;
+}
+
+h2 {
+  font-size: 1.1em;
+  margin: 5px 0 0 5px;
+}
+
+p {
+  margin: 0 10px 10px 10px;
+}
+
+img {
+  width: 100%;
+  display: block;
+  margin: 0 auto;
+}
+
+/* General styling for cards */
+.card {
+  border: 1px solid black;
+  margin: 0 5px 10px;
+}
+
+/* Card: Summary */
+#summary {
+  text-align: center;
+  font-size: 1.5em;
+}
+
+#summary p {
+  font-size: 1.8em;
+  margin-bottom: 10px;
+}
+
+/* Card: Confirmed/Deaths by State */
+.attr-by-state {
+  max-height: 80vh;
+  overflow: auto;
+}
+
+.attr-by-state .header {
+  margin: 0 auto;
+  position: absolute;
+  background: white;
+  width: calc(100% - 12px);
+}
+
+.attr-by-state .content {
+  padding-top: 50px;
+}
+
+.attr-by-state h2 {
+  padding: 10px 0;
+}
+
+@media (min-width: 1200px) {
+  main {
+    display: flex;
+    justify-content: center;
+  }
+
+  /* Left section */
+  #left {
+    width: var(--desktop-left-width);
+  }
+
+  #summary {
+    min-height: 20vh;
+  }
+
+  .attr-by-state {
+    height: calc(35vh - 6px);
+  }
+
+  .attr-by-state .header{
+    width: calc(var(--desktop-left-width) - 30px);
+  }
+
+  .attr-by-state h2 {
+    width: calc(var(--desktop-left-width) - 30px);
+  }
+
+  /* Middle section */
+  #middle {
+    width: var(--desktop-center-width);
+  }
+
+  #choropleth-map {
+    min-width: calc(var(--desktop-center-width) - 2px);
+    min-height: calc(90vh + 12px);
+  }
+
+  /* Right section */
+  #right {
+    width: var(--desktop-right-width);
+  }
+
+  #model, #model-fit {
+    height: 45vh;
+  }
+}
