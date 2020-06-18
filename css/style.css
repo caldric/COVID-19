@@ -2,6 +2,8 @@
   --desktop-left-width: 20vw;
   --desktop-center-width: 45vw;
   --desktop-right-width: 35vw;
+  --margin: 5px;
+  --border-pixels: 1px;
 }
 
 /* General styling */
@@ -39,7 +41,8 @@ img {
 /* Card: Summary */
 #summary {
   text-align: center;
-  font-size: 1.5em;
+  font-size: 1.3em;
+  overflow: auto;
 }
 
 #summary p {
@@ -72,45 +75,38 @@ img {
   main {
     display: flex;
     justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    flex-wrap: wrap;
+    height: 93vh;
   }
 
   /* Left section */
-  #left {
-    width: var(--desktop-left-width);
+  #summary, .attr-by-state {
+    width: calc(var(--desktop-left-width) - var(--margin) - 2 * var(--border-pixels));
   }
 
   #summary {
-    min-height: 20vh;
+    height: calc(20vh - var(--margin) - 2 * var(--border-pixels));
   }
 
   .attr-by-state {
-    height: calc(35vh - 6px);
+    height: calc(35vh - var(--margin) - 2 * var(--border-pixels));
   }
 
-  .attr-by-state .header{
-    width: calc(var(--desktop-left-width) - 30px);
-  }
-
-  .attr-by-state h2 {
-    width: calc(var(--desktop-left-width) - 30px);
+  .attr-by-state .header {
+    width: calc(var(--desktop-left-width) - 20px);
   }
 
   /* Middle section */
-  #middle {
-    width: var(--desktop-center-width);
-  }
-
   #choropleth-map {
-    min-width: calc(var(--desktop-center-width) - 2px);
-    min-height: calc(90vh + 12px);
+    width: calc(var(--desktop-center-width) - var(--margin) - 2 * var(--border-pixels));
+    height: calc(90vh + 4px);
   }
 
   /* Right section */
-  #right {
-    width: var(--desktop-right-width);
-  }
-
   #model, #model-fit {
-    height: 45vh;
+    width: calc(var(--desktop-right-width) - 25px);
+    height: calc(45vh - 4px);
   }
 }
