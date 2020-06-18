@@ -19,6 +19,12 @@ p {
   margin: 0;
 }
 
+img {
+  width: 100%;
+  display: block;
+  margin: 0 auto;
+}
+
 /* General styling for cards */
 .card {
   border: 1px solid black;
