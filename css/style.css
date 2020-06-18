@@ -46,15 +46,17 @@ img {
 .attr-by-state {
   max-height: 80vh;
   overflow: auto;
-  padding: 0 5px;
 }
 
 .attr-by-state .header {
-  margin: 0;
+  margin: 0 auto;
   position: absolute;
-  width: 95vw;
   background: white;
-  padding: 5px 0;
+  width: calc(100% - 14px);
+}
+
+.attr-by-state h2 {
+  margin-left: 5px;
 }
 
 .attr-by-state .content {
@@ -62,5 +64,5 @@ img {
 }
 
 .attr-by-state p {
-  margin: 0 0 5px 5px;
+  margin: 0 0 5px 10px;
 }
