@@ -1,3 +1,9 @@
+:root {
+  --desktop-left-width: 20vw;
+  --desktop-center-width: 45vw;
+  --desktop-right-width: 35vw;
+}
+
 /* General styling */
 body {
   font-family: sans-serif;
@@ -70,7 +76,7 @@ img {
 
   /* Left section */
   #left {
-    width: 20vw;
+    width: var(--desktop-left-width);
   }
 
   #summary {
@@ -82,26 +88,26 @@ img {
   }
 
   .attr-by-state .header{
-    width: calc(20vw - 30px);
+    width: calc(var(--desktop-left-width) - 30px);
   }
 
   .attr-by-state h2 {
-    width: calc(20vw - 30px);
+    width: calc(var(--desktop-left-width) - 30px);
   }
 
   /* Middle section */
   #middle {
-    width: 50vw;
+    width: var(--desktop-center-width);
   }
 
   #choropleth-map {
-    min-width: calc(50vw - 2px);
+    min-width: calc(var(--desktop-center-width) - 2px);
     min-height: calc(90vh + 12px);
   }
 
   /* Right section */
   #right {
-    width: 30vw;
+    width: var(--desktop-right-width);
   }
 
   #model, #model-fit {
