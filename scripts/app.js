@@ -108,7 +108,7 @@ const createSummary = (confirmedCount, deathsCount) => {
   $targetDiv.append($confirmedHeader, $confirmedCount, $deathsHeader, $deathsCount);
 };
 
-const createAttrByState = (states, $target, targetKey, description) => {
+const createAttrByState = (states, $target, targetKey, description, spanClass='') => {
   // Locate target
   const $targetDiv = $target;
   $targetDiv.addClass('card');
@@ -126,7 +126,8 @@ const createAttrByState = (states, $target, targetKey, description) => {
   sortedStates = states.sort((a, b) => b.positive - a.positive);
   sortedStates.forEach(state => {
     const value = addCommaSeparator(state[targetKey]);
-    const $newItem = $('<p>').text(`${state.name}: ${value}`);
+    const $newItem = $('<p>').text(`${state.name}: `);
+    $newItem.append($('<span>').addClass(spanClass).text(`${value}`));
     $contentDiv.append($newItem);
   });
   $targetDiv.append($contentDiv);
@@ -156,7 +157,7 @@ const render = async () => {
   createSummary(currentConfirmed, currentDeaths);
 
   // Card 2: Confirmed by State
-  createAttrByState(states, $('#confirmed-by-state'), 'positive', 'confirmed');
+  createAttrByState(states, $('#confirmed-by-state'), 'positive', 'confirmed', 'infected');
 
   // Card 3: Deaths by State
   createAttrByState(states, $('#deaths-by-state'), 'death', 'deaths');
