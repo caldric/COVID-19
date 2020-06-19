@@ -130,6 +130,7 @@ const createAttrByState = (states, $target, targetKey, description, spanClass=''
     $newItem.text(`${state.name}`);
     $newItem.prepend($('<span>').addClass(spanClass).text(`${value}  `));
     $contentDiv.append($newItem);
+    $contentDiv.append($('<hr>'));
   });
   $targetDiv.append($contentDiv);
 };
