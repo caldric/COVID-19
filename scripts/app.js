@@ -92,7 +92,7 @@ const addCommaSeparator = (num) => {
 const createSummary = (confirmedCount, deathsCount) => {
   // Locate target
   const $targetDiv = $('#summary');
-  $targetDiv.addClass('card');
+  $targetDiv.addClass('content');
 
   // Convert numbers to comma-separated numbers
   confirmedCount = addCommaSeparator(confirmedCount);
@@ -111,7 +111,7 @@ const createSummary = (confirmedCount, deathsCount) => {
 const createAttrByState = (states, $target, targetKey, description) => {
   // Locate target
   const $targetDiv = $target;
-  $targetDiv.addClass('card');
+  $targetDiv.addClass('content');
   $targetDiv.addClass('attr-by-state');
 
   // Generate header content
@@ -121,7 +121,7 @@ const createAttrByState = (states, $target, targetKey, description) => {
   $targetDiv.append($headerDiv);
 
   // Generate data by state in descending order
-  const $contentDiv = $('<div>').addClass('content');
+  const $contentDiv = $('<div>');
   sortedStates = JSON.parse(JSON.stringify(states));
   sortedStates = states.sort((a, b) => b.positive - a.positive);
   sortedStates.forEach(state => {
@@ -135,7 +135,7 @@ const createAttrByState = (states, $target, targetKey, description) => {
 const createImgCard = ($target, headerText, imgSrc='', imgAlt='') => {
   // Locate target
   const $targetDiv = $target;
-  $targetDiv.addClass('card');
+  $targetDiv.addClass('content');
 
   const $header = $('<h2>').text(headerText);
   const $img = $('<img>').attr('src', imgSrc);
