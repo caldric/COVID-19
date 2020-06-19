@@ -100,7 +100,7 @@ const createSummary = (confirmedCount, deathsCount) => {
 
   // Generate content
   const $confirmedHeader = $('<h2>').text('Total Confirmed');
-  const $confirmedCount = $('<p>').text(confirmedCount);
+  const $confirmedCount = $('<p>').addClass('infected').text(confirmedCount);
   const $deathsHeader = $('<h2>').text('Total Deaths');
   const $deathsCount = $('<p>').text(deathsCount);
 
