@@ -46,6 +46,13 @@ img {
   width: 100%;
 }
 
+hr {
+  border: none;
+  height: 1px;
+  color: gray;
+  background-color: gray;
+}
+
 .infected {
   color: #e60000;
   font-weight: 600;
