@@ -1,4 +1,4 @@
-// Data
+// States data
 const states = [
   {name: 'Alabama', code: 'AL'},
   {name: 'Alaska', code: 'AK'},
@@ -54,7 +54,7 @@ const states = [
 ];
 
 
-// URLs
+// URL
 const currentURL = 'https://covidtracking.com/api/v1/states/current.json';
 
 
@@ -144,40 +144,41 @@ const createImgCard = ($target, headerText, imgSrc='', imgAlt='') => {
   $targetDiv.append($header, $img);
 };
 
+const render = async () => {
+  // Extract relevant data
+  const jsonData = await getData(currentURL);
+  const relevantFields = ['positive', 'death'];
+  extractRelevantData(jsonData, states, relevantFields);
 
-$(() => {
-  getData(currentURL).then((jsonData) => {
-    // Extract relevant data
-    const relevantFields = ['positive', 'death'];
-    extractRelevantData(jsonData, states, relevantFields);
+  // Card 1: Summary Data
+  const currentConfirmed = getTotalCount(jsonData, 'positive');
+  const currentDeaths = getTotalCount(jsonData, 'death');
+  createSummary(currentConfirmed, currentDeaths);
 
-    // Card 1: Summary Data
-    const currentConfirmed = getTotalCount(jsonData, 'positive');
-    const currentDeaths = getTotalCount(jsonData, 'death');
-    createSummary(currentConfirmed, currentDeaths);
+  // Card 2: Confirmed by State
+  createAttrByState(states, $('#confirmed-by-state'), 'positive', 'confirmed');
 
-    // Card 2: Confirmed by State
-    createAttrByState(states, $('#confirmed-by-state'), 'positive', 'confirmed');
+  // Card 3: Deaths by State
+  createAttrByState(states, $('#deaths-by-state'), 'death', 'deaths');
 
-    // Card 3: Deaths by State
-    createAttrByState(states, $('#deaths-by-state'), 'death', 'deaths');
+  // Card: Choropleth Map
+  createImgCard(
+    $('#choropleth-map'), 'Choropleth Map', './images/state_timeline.gif',
+    'US choropleth map of confirmed COVID-19 cases'
+  );
 
-    // Card: Choropleth Map
-    createImgCard(
-      $('#choropleth-map'), 'Choropleth Map', './images/state_timeline.gif',
-      'US choropleth map of confirmed COVID-19 cases'
-    );
+  // Card: SIR Model
+  createImgCard(
+    $('#model'), 'SIR Model', './images/projection.png',
+    'SIR model for COVID-19'
+  );
 
-    // Card: SIR Model
-    createImgCard(
-      $('#model'), 'SIR Model', './images/projection.png',
-      'SIR model for COVID-19'
-    );
+  // Card: SIR model fit
+  createImgCard(
+    $('#model-fit'), 'SIR Model Fit', './images/fit.png',
+    'SIR model fit for COVID-19'
+  );
+};
 
-    // Card: SIR model fit
-    createImgCard(
-      $('#model-fit'), 'SIR Model Fit', './images/fit.png',
-      'SIR model fit for COVID-19'
-    );
-  });
-});
+
+$(() => render());

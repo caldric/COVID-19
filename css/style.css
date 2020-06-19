@@ -1,11 +1,3 @@
-:root {
-  --desktop-left-width: 20vw;
-  --desktop-center-width: 45vw;
-  --desktop-right-width: 35vw;
-  --margin: 5px;
-  --border-pixels: 1px;
-}
-
 /* General styling */
 body {
   font-family: sans-serif;
@@ -19,17 +11,15 @@ h1 {
 
 h2 {
   font-size: 1.1em;
-  margin: 5px 0 0 5px;
+  margin: 5px 5px 0;
 }
 
 p {
-  margin: 0 10px 10px 10px;
+  margin: 0 10px 10px;
 }
 
 img {
   width: 100%;
-  display: block;
-  margin: 0 auto;
 }
 
 /* General styling for cards */
@@ -47,66 +37,99 @@ img {
 
 #summary p {
   font-size: 1.8em;
-  margin-bottom: 10px;
 }
 
 /* Card: Confirmed/Deaths by State */
 .attr-by-state {
-  max-height: 80vh;
+  height: 65vh;
   overflow: auto;
+  position: relative;
 }
 
 .attr-by-state .header {
-  margin: 0 auto;
-  position: absolute;
+  position: sticky;
   background: white;
-  width: calc(100% - 12px);
-}
-
-.attr-by-state .content {
-  padding-top: 50px;
+  top: 0;
+  width: calc(100% - 2px);
 }
 
 .attr-by-state h2 {
-  padding: 10px 0;
+  margin: 0;
+  padding: 10px 5px;
 }
 
-@media (min-width: 1200px) {
-  main {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    flex-wrap: wrap;
-    height: 93vh;
+@media screen and (min-width: 600px) {
+  #container {
+    width: 95%;
+    height: 150vh;
+    margin: 0 auto 20px;
+    display: grid;
+    gap: 10px;
+    grid-auto-flow: column;
+    grid-template-rows: repeat(100, 1fr);
+    grid-template-columns: 1fr 2fr;
   }
 
-  /* Left section */
-  #summary, .attr-by-state {
-    width: calc(var(--desktop-left-width) - var(--margin) - 2 * var(--border-pixels));
+  .card {
+    margin: 0;
+    width: 100%;
+    height: 100%;
   }
 
   #summary {
-    height: calc(20vh - var(--margin) - 2 * var(--border-pixels));
+    grid-row: 1 / span 24;
   }
 
-  .attr-by-state {
-    height: calc(35vh - var(--margin) - 2 * var(--border-pixels));
+  #confirmed-by-state {
+    grid-row: 25 / span 38;
   }
 
-  .attr-by-state .header {
-    width: calc(var(--desktop-left-width) - 20px);
+  #deaths-by-state {
+    grid-row: 63 / span 38;
   }
 
-  /* Middle section */
   #choropleth-map {
-    width: calc(var(--desktop-center-width) - var(--margin) - 2 * var(--border-pixels));
-    height: calc(90vh + 4px);
+    grid-row: 1 / span 34;
   }
 
-  /* Right section */
-  #model, #model-fit {
-    width: calc(var(--desktop-right-width) - 25px);
-    height: calc(45vh - 4px);
+  #model {
+    grid-row: 35 / span 33;
+  }
+
+  #model-fit {
+    grid-row: 68 / span 33;
+  }
+}
+
+@media screen and (min-width: 1000px) {
+  #container {
+    grid-template-rows: repeat(100, 1fr);
+    grid-template-columns: 20fr 45fr 35fr;
+    width: 98%;
+    height: 90vh;
+  }
+
+  #summary {
+    grid-row: 1 / span 20;
+  }
+
+  #confirmed-by-state {
+    grid-row: 21 / span 40;
+  }
+
+  #deaths-by-state {
+    grid-row: 61 / span 40;
+  }
+
+  #choropleth-map {
+    grid-row: 1 / span 100;
+  }
+
+  #model {
+    grid-row: 1 / span 50;
+  }
+
+  #model-fit {
+    grid-row: 51 / span 50;
   }
 }
