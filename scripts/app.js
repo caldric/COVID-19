@@ -123,7 +123,7 @@ const createAttrByState = (states, $target, targetKey, description, spanClass=''
   // Generate data by state in descending order
   const $contentDiv = $('<div>');
   sortedStates = JSON.parse(JSON.stringify(states));
-  sortedStates = states.sort((a, b) => b.positive - a.positive);
+  sortedStates = states.sort((a, b) => b[targetKey] - a[targetKey]);
   sortedStates.forEach(state => {
     const value = addCommaSeparator(state[targetKey]);
     const $newItem = $('<p>');
