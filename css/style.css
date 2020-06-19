@@ -56,3 +56,46 @@ img {
   margin: 0;
   padding: 10px 5px;
 }
+
+@media screen and (min-width: 600px) {
+  #container {
+    width: 95%;
+    height: 130vh;
+    margin: 0 auto;
+    display: grid;
+    gap: 5px;
+    grid-auto-flow: column;
+    grid-template-rows: repeat(100, 1fr);
+    grid-template-columns: 1fr 2fr;
+  }
+
+  .card {
+    margin: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  #summary {
+    grid-row: 1 / span 24;
+  }
+
+  #confirmed-by-state {
+    grid-row: 25 / span 38;
+  }
+
+  #deaths-by-state {
+    grid-row: 63 / span 38;
+  }
+
+  #choropleth-map {
+    grid-row: 1 / span 34;
+  }
+
+  #model {
+    grid-row: 35 / span 33;
+  }
+
+  #model-fit {
+    grid-row: 68 / span 33;
+  }
+}
