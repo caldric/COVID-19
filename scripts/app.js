@@ -126,8 +126,9 @@ const createAttrByState = (states, $target, targetKey, description, spanClass=''
   sortedStates = states.sort((a, b) => b.positive - a.positive);
   sortedStates.forEach(state => {
     const value = addCommaSeparator(state[targetKey]);
-    const $newItem = $('<p>').text(`${state.name}: `);
-    $newItem.append($('<span>').addClass(spanClass).text(`${value}`));
+    const $newItem = $('<p>');
+    $newItem.text(`${state.name}`);
+    $newItem.prepend($('<span>').addClass(spanClass).text(`${value}  `));
     $contentDiv.append($newItem);
   });
   $targetDiv.append($contentDiv);

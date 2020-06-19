@@ -1,3 +1,8 @@
+/*
+Some design elements are inspired by or taken from below:
+https://www.arcgis.com/apps/opsdashboard/index.html#/bda7594740fd40299423467b48e9ecf6
+*/
+
 /* General styling */
 body {
   font-family: sans-serif;
@@ -10,8 +15,10 @@ h1 {
 }
 
 h2 {
-  font-size: 1.1em;
+  font-size: 0.9em;
   margin: 5px 5px 0;
+  text-align: center;
+  font-weight: 500;
 }
 
 p {
@@ -24,10 +31,12 @@ img {
 
 .infected {
   color: #e60000;
+  font-weight: 600;
 }
 
 .deaths {
   color: #123caf;
+  font-weight: 600;
 }
 
 /* General styling for cards */
