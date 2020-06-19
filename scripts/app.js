@@ -102,7 +102,7 @@ const createSummary = (confirmedCount, deathsCount) => {
   const $confirmedHeader = $('<h2>').text('Total Confirmed');
   const $confirmedCount = $('<p>').addClass('infected').text(confirmedCount);
   const $deathsHeader = $('<h2>').text('Total Deaths');
-  const $deathsCount = $('<p>').text(deathsCount);
+  const $deathsCount = $('<p>').addClass('deaths').text(deathsCount);
 
   // Add content to DOM
   $targetDiv.append($confirmedHeader, $confirmedCount, $deathsHeader, $deathsCount);
@@ -160,7 +160,7 @@ const render = async () => {
   createAttrByState(states, $('#confirmed-by-state'), 'positive', 'confirmed', 'infected');
 
   // Card 3: Deaths by State
-  createAttrByState(states, $('#deaths-by-state'), 'death', 'deaths');
+  createAttrByState(states, $('#deaths-by-state'), 'death', 'deaths', 'deaths');
 
   // Card: Choropleth Map
   createImgCard(

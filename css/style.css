@@ -23,7 +23,11 @@ img {
 }
 
 .infected {
-  color: red;
+  color: #e60000;
+}
+
+.deaths {
+  color: #123caf;
 }
 
 /* General styling for cards */
