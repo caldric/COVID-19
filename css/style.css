@@ -50,6 +50,7 @@ img {
   position: sticky;
   background: white;
   top: 0;
+  width: calc(100% - 2px);
 }
 
 .attr-by-state h2 {
@@ -60,10 +61,10 @@ img {
 @media screen and (min-width: 600px) {
   #container {
     width: 95%;
-    height: 130vh;
-    margin: 0 auto;
+    height: 150vh;
+    margin: 0 auto 20px;
     display: grid;
-    gap: 5px;
+    gap: 10px;
     grid-auto-flow: column;
     grid-template-rows: repeat(100, 1fr);
     grid-template-columns: 1fr 2fr;
@@ -97,5 +98,38 @@ img {
 
   #model-fit {
     grid-row: 68 / span 33;
+  }
+}
+
+@media screen and (min-width: 1000px) {
+  #container {
+    grid-template-rows: repeat(100, 1fr);
+    grid-template-columns: 20fr 45fr 35fr;
+    width: 98%;
+    height: 90vh;
+  }
+
+  #summary {
+    grid-row: 1 / span 20;
+  }
+
+  #confirmed-by-state {
+    grid-row: 21 / span 40;
+  }
+
+  #deaths-by-state {
+    grid-row: 61 / span 40;
+  }
+
+  #choropleth-map {
+    grid-row: 1 / span 100;
+  }
+
+  #model {
+    grid-row: 1 / span 50;
+  }
+
+  #model-fit {
+    grid-row: 51 / span 50;
   }
 }
