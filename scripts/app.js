@@ -1,4 +1,4 @@
-// Data
+// States data
 const states = [
   {name: 'Alabama', code: 'AL'},
   {name: 'Alaska', code: 'AK'},
@@ -54,7 +54,7 @@ const states = [
 ];
 
 
-// URLs
+// URL
 const currentURL = 'https://covidtracking.com/api/v1/states/current.json';
 
 
