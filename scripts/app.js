@@ -83,7 +83,7 @@ String.prototype.toTitleCase = function() {
 };
 
 const addCommaSeparator = (num) => {
-  // Orignal source: https://bit.ly/3fvdMWD
+  // Source: https://bit.ly/3fvdMWD
   return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 };
 
@@ -187,7 +187,7 @@ $(() => {
 
   // Event listeners
   // Drag and drop functionality
-  // Original source: https://bit.ly/2YQm4l9
+  // Source: https://bit.ly/2YQm4l9
   $('#summary').draggable();
   $('#confirmed-by-state').draggable();
   $('#deaths-by-state').draggable();
