@@ -100,15 +100,15 @@ const createSummary = (confirmedCount, deathsCount) => {
 
   // Generate content
   const $confirmedHeader = $('<h2>').text('Total Confirmed');
-  const $confirmedCount = $('<p>').text(confirmedCount);
+  const $confirmedCount = $('<p>').addClass('infected').text(confirmedCount);
   const $deathsHeader = $('<h2>').text('Total Deaths');
-  const $deathsCount = $('<p>').text(deathsCount);
+  const $deathsCount = $('<p>').addClass('deaths').text(deathsCount);
 
   // Add content to DOM
   $targetDiv.append($confirmedHeader, $confirmedCount, $deathsHeader, $deathsCount);
 };
 
-const createAttrByState = (states, $target, targetKey, description) => {
+const createAttrByState = (states, $target, targetKey, description, spanClass='') => {
   // Locate target
   const $targetDiv = $target;
   $targetDiv.addClass('card');
@@ -123,11 +123,14 @@ const createAttrByState = (states, $target, targetKey, description) => {
   // Generate data by state in descending order
   const $contentDiv = $('<div>');
   sortedStates = JSON.parse(JSON.stringify(states));
-  sortedStates = states.sort((a, b) => b.positive - a.positive);
+  sortedStates = states.sort((a, b) => b[targetKey] - a[targetKey]);
   sortedStates.forEach(state => {
     const value = addCommaSeparator(state[targetKey]);
-    const $newItem = $('<p>').text(`${state.name}: ${value}`);
+    const $newItem = $('<p>');
+    $newItem.text(`${state.name}`);
+    $newItem.prepend($('<span>').addClass(spanClass).text(`${value}  `));
     $contentDiv.append($newItem);
+    $contentDiv.append($('<hr>'));
   });
   $targetDiv.append($contentDiv);
 };
@@ -156,10 +159,10 @@ const render = async () => {
   createSummary(currentConfirmed, currentDeaths);
 
   // Card 2: Confirmed by State
-  createAttrByState(states, $('#confirmed-by-state'), 'positive', 'confirmed');
+  createAttrByState(states, $('#confirmed-by-state'), 'positive', 'confirmed', 'infected');
 
   // Card 3: Deaths by State
-  createAttrByState(states, $('#deaths-by-state'), 'death', 'deaths');
+  createAttrByState(states, $('#deaths-by-state'), 'death', 'deaths', 'deaths');
 
   // Card: Choropleth Map
   createImgCard(

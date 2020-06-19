@@ -1,17 +1,41 @@
+/*
+Some design elements are inspired by or taken from below:
+https://www.arcgis.com/apps/opsdashboard/index.html#/bda7594740fd40299423467b48e9ecf6
+*/
+
 /* General styling */
 body {
   font-family: sans-serif;
   margin: 0;
+  background-color: rgba(245, 245, 245, 0.5);
 }
 
 h1 {
   font-size: 1.2em;
   margin: 15px 5px;
+  background-color: black;
+  color: white;
+  width: 100%;
+  margin: 0;
+  margin-bottom: 20px;
+  padding: 10px;
+  font-weight: 400;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
 }
 
 h2 {
-  font-size: 1.1em;
+  font-size: 0.9em;
   margin: 5px 5px 0;
+  text-align: center;
+  font-weight: 500;
 }
 
 p {
@@ -22,17 +46,36 @@ img {
   width: 100%;
 }
 
+.infected {
+  color: #e60000;
+  font-weight: 600;
+}
+
+.deaths {
+  color: #123caf;
+  font-weight: 600;
+}
+
+#container {
+  padding-top: 60px;
+}
+
 /* General styling for cards */
 .card {
-  border: 1px solid black;
+  border: 1px solid rgb(200, 200, 200);
   margin: 0 5px 10px;
+  background-color: #fff;
 }
 
 /* Card: Summary */
 #summary {
-  text-align: center;
   font-size: 1.3em;
   overflow: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-flow: wrap;
+  flex-direction: column;
 }
 
 #summary p {
