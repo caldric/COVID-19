@@ -83,7 +83,7 @@ String.prototype.toTitleCase = function() {
 };
 
 const addCommaSeparator = (num) => {
-  // Orignal source: https://bit.ly/3fvdMWD
+  // Source: https://bit.ly/3fvdMWD
   return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 };
 
@@ -121,7 +121,7 @@ const createAttrByState = (states, $target, targetKey, description) => {
   $targetDiv.append($headerDiv);
 
   // Generate data by state in descending order
-  const $contentDiv = $('<div>').addClass('content');
+  const $contentDiv = $('<div>');
   sortedStates = JSON.parse(JSON.stringify(states));
   sortedStates = states.sort((a, b) => b.positive - a.positive);
   sortedStates.forEach(state => {
@@ -181,4 +181,32 @@ const render = async () => {
 };
 
 
-$(() => render());
+$(() => {
+  // Render page
+  render();
+
+  // Event listeners
+  // Drag and drop functionality
+  // Source: https://bit.ly/2YQm4l9
+  $('#summary').draggable();
+  $('#confirmed-by-state').draggable();
+  $('#deaths-by-state').draggable();
+  $('#choropleth-map').draggable();
+  $('#model').draggable();
+  $('#model-fit').draggable();
+
+  $('.slot').droppable({
+    tolerance: 'touch',
+    drop: function(event, ui) {
+      // Get targets
+      const $droppedItem = ui.draggable;
+      const $oldParent = $droppedItem.parent();
+      const $newParent = $(this);
+      const $oldChild = $(this).children().eq(0);
+
+      // Switch the positions of the content divs
+      $oldChild.detach().css({top: 0, left: 0}).appendTo($oldParent);
+      $droppedItem.detach().css({top: 0, left: 0}).appendTo($newParent);
+    }
+  });
+});

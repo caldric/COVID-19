@@ -76,27 +76,27 @@ img {
     height: 100%;
   }
 
-  #summary {
+  #first {
     grid-row: 1 / span 24;
   }
 
-  #confirmed-by-state {
+  #second {
     grid-row: 25 / span 38;
   }
 
-  #deaths-by-state {
+  #third {
     grid-row: 63 / span 38;
   }
 
-  #choropleth-map {
+  #fourth {
     grid-row: 1 / span 34;
   }
 
-  #model {
+  #fifth {
     grid-row: 35 / span 33;
   }
 
-  #model-fit {
+  #sixth {
     grid-row: 68 / span 33;
   }
 }
@@ -109,27 +109,27 @@ img {
     height: 90vh;
   }
 
-  #summary {
+  #first {
     grid-row: 1 / span 20;
   }
 
-  #confirmed-by-state {
+  #second {
     grid-row: 21 / span 40;
   }
 
-  #deaths-by-state {
+  #third {
     grid-row: 61 / span 40;
   }
 
-  #choropleth-map {
+  #fourth {
     grid-row: 1 / span 100;
   }
 
-  #model {
+  #fifth {
     grid-row: 1 / span 50;
   }
 
-  #model-fit {
+  #sixth {
     grid-row: 51 / span 50;
   }
 }

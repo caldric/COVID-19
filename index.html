@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="css/style.css">
   <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js" integrity="sha256-T0Vest3yCU7pafRw9r+settMBX6JkKN06dqBnpQ8d30=" crossorigin="anonymous"></script>
   <script src="scripts/app.js"></script>
   <title>COVID-19 Dashboard</title>
 </head>
@@ -14,12 +15,24 @@
   </header>
   <main>
     <div id="container">
-      <div id="summary"></div>
-      <div id="confirmed-by-state"></div>
-      <div id="deaths-by-state"></div>
-      <div id="choropleth-map"></div>
-      <div id="model"></div>
-      <div id="model-fit"></div>
+      <div id="first" class="slot">
+        <div id="summary"></div>
+      </div>
+      <div id="second" class="slot">
+        <div id="confirmed-by-state"></div>
+      </div>
+      <div id="third" class="slot">
+        <div id="deaths-by-state"></div>
+      </div>
+      <div id="fourth" class="slot">
+        <div id="choropleth-map"></div>
+      </div>
+      <div id="fifth" class="slot">
+        <div id="model"></div>
+      </div>
+      <div id="sixth" class="slot">
+        <div id="model-fit"></div>
+      </div>
     </div>
   </main>
 </body>
