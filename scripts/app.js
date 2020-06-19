@@ -199,7 +199,7 @@ $(() => {
   $('#model-fit').draggable();
 
   $('.slot').droppable({
-    tolerance: 'touch',
+    tolerance: 'pointer',
     drop: function(event, ui) {
       // Get targets
       const $droppedItem = ui.draggable;
