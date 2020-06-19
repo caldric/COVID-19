@@ -111,7 +111,6 @@ img {
     grid-template-columns: 20fr 45fr 35fr;
     width: 98%;
     height: 90vh;
-    overflow: auto;
   }
 
   #first {
