@@ -188,7 +188,9 @@ $(() => {
   // Event listeners
   // Drag and drop functionality
   // Source: https://bit.ly/2YQm4l9
-  $('.card').draggable();
+  $('.card').draggable({
+    containment: '#container'
+  });
 
   $('.slot').droppable({
     tolerance: 'pointer',
