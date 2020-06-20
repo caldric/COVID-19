@@ -151,8 +151,8 @@ const render = async () => {
   extractRelevantData(jsonData, states, relevantFields);
 
   // Card 1: Summary Data
-  const currentConfirmed = getTotalCount(jsonData, 'positive');
-  const currentDeaths = getTotalCount(jsonData, 'death');
+  const currentConfirmed = getTotalCount(states, 'positive');
+  const currentDeaths = getTotalCount(states, 'death');
   createSummary(currentConfirmed, currentDeaths);
 
   // Card 2: Confirmed by State
