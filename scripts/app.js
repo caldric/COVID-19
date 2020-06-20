@@ -92,7 +92,6 @@ const addCommaSeparator = (num) => {
 const createSummary = (confirmedCount, deathsCount) => {
   // Locate target
   const $targetDiv = $('#summary');
-  $targetDiv.addClass('card');
 
   // Convert numbers to comma-separated numbers
   confirmedCount = addCommaSeparator(confirmedCount);
@@ -111,7 +110,6 @@ const createSummary = (confirmedCount, deathsCount) => {
 const createAttrByState = (states, $target, targetKey, description, spanClass='') => {
   // Locate target
   const $targetDiv = $target;
-  $targetDiv.addClass('card');
   $targetDiv.addClass('attr-by-state');
 
   // Generate header content
@@ -138,7 +136,6 @@ const createAttrByState = (states, $target, targetKey, description, spanClass=''
 const createImgCard = ($target, headerText, imgSrc='', imgAlt='') => {
   // Locate target
   const $targetDiv = $target;
-  $targetDiv.addClass('card');
 
   const $header = $('<h2>').text(headerText);
   const $img = $('<img>').attr('src', imgSrc);
@@ -191,12 +188,7 @@ $(() => {
   // Event listeners
   // Drag and drop functionality
   // Source: https://bit.ly/2YQm4l9
-  $('#summary').draggable();
-  $('#confirmed-by-state').draggable();
-  $('#deaths-by-state').draggable();
-  $('#choropleth-map').draggable();
-  $('#model').draggable();
-  $('#model-fit').draggable();
+  $('.card').draggable();
 
   $('.slot').droppable({
     tolerance: 'pointer',
