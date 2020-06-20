@@ -54,8 +54,8 @@ const states = [
 ];
 
 
-// URL
-const currentURL = 'https://covidtracking.com/api/v1/states/current.json';
+// API URL
+const apiURL = 'https://covidtracking.com/api/v1/states/current.json';
 
 
 // General functions
@@ -78,13 +78,13 @@ const extractRelevantData = (jsonData, states, targetKeys) => {
   });
 };
 
-String.prototype.toTitleCase = function() {
-  return this[0].toUpperCase() + this.slice(1).toLowerCase();
-};
-
 const addCommaSeparator = (num) => {
   // Source: https://bit.ly/3fvdMWD
   return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+};
+
+String.prototype.toTitleCase = function() {
+  return this[0].toUpperCase() + this.slice(1).toLowerCase();
 };
 
 
@@ -123,12 +123,11 @@ const createAttrByState = (states, $target, targetKey, description, spanClass=''
   sortedStates = JSON.parse(JSON.stringify(states));
   sortedStates = states.sort((a, b) => b[targetKey] - a[targetKey]);
   sortedStates.forEach(state => {
-    const value = addCommaSeparator(state[targetKey]);
-    const $newItem = $('<p>');
-    $newItem.text(`${state.name}`);
-    $newItem.prepend($('<span>').addClass(spanClass).text(`${value}  `));
-    $contentDiv.append($newItem);
-    $contentDiv.append($('<hr>'));
+    const count = addCommaSeparator(state[targetKey]);
+    const $newRow = $('<p>');
+    $newRow.text(`${state.name}`);
+    $newRow.prepend($('<span>').addClass(spanClass).text(`${count}  `));
+    $contentDiv.append($newRow, $('<hr>'));
   });
   $targetDiv.append($contentDiv);
 };
@@ -137,18 +136,20 @@ const createImgCard = ($target, headerText, imgSrc='', imgAlt='') => {
   // Locate target
   const $targetDiv = $target;
 
+  // Generate content
   const $header = $('<h2>').text(headerText);
   const $img = $('<img>').attr('src', imgSrc);
   $img.attr('alt', imgAlt);
 
+  // Add content to DOM
   $targetDiv.append($header, $img);
 };
 
 const render = async () => {
   // Extract relevant data
-  const jsonData = await getData(currentURL);
+  const covidData = await getData(apiURL);
   const relevantFields = ['positive', 'death'];
-  extractRelevantData(jsonData, states, relevantFields);
+  extractRelevantData(covidData, states, relevantFields);
 
   // Card 1: Summary Data
   const currentConfirmed = getTotalCount(states, 'positive');
