@@ -2,7 +2,30 @@
 
 ## Overview
 
-A COVID-19 [dashboard](https://caldric.github.io/COVID-19/) built using HTML, CSS, JavaScript, and jQuery.
+A U.S. COVID-19 [dashboard](https://caldric.github.io/COVID-19/) showing the total confirmed SARS-CoV-2 infected cases and deaths; total confirmed and deaths by state; U.S. choropleth map timeline from February to the most recent day; and an SIR (Susceptible-Infected-Recovered) mathematical model and fit.
+
+### Techonologies Used
+
+- HTML
+- CSS
+- JavaScript
+- jQuery
+- AJAX
+- Python
+- NumPy
+- Pandas
+- SciPy
+
+### Features
+
+- APIs
+- CSS Grid
+- Drag and drop (UI)
+- Sticky navbar/header
+- Responsive web design
+- Mathematical modelling
+- Mathematical optimization
+- Data wrangling
 
 ## Data Sources
 
