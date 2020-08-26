@@ -1,92 +1,89 @@
 // States data
 const states = [
-  {name: 'Alabama', code: 'AL'},
-  {name: 'Alaska', code: 'AK'},
-  {name: 'Arizona', code: 'AZ'},
-  {name: 'Arkansas', code: 'AR'},
-  {name: 'California', code: 'CA'},
-  {name: 'Colorado', code: 'CO'},
-  {name: 'Connecticut', code: 'CT'},
-  {name: 'Delaware', code: 'DE'},
-  {name: 'District of Columbia', code: 'DC'},
-  {name: 'Florida', code: 'FL'},
-  {name: 'Georgia', code: 'GA'},
-  {name: 'Hawaii', code: 'HI'},
-  {name: 'Idaho', code: 'ID'},
-  {name: 'Illinois', code: 'IL'},
-  {name: 'Indiana', code: 'IN'},
-  {name: 'Iowa', code: 'IA'},
-  {name: 'Kansas', code: 'KS'},
-  {name: 'Kentucky', code: 'KY'},
-  {name: 'Louisiana', code: 'LA'},
-  {name: 'Maine', code: 'ME'},
-  {name: 'Maryland', code: 'MD'},
-  {name: 'Massachusetts', code: 'MA'},
-  {name: 'Michigan', code: 'MI'},
-  {name: 'Minnesota', code: 'MN'},
-  {name: 'Mississippi', code: 'MS'},
-  {name: 'Missouri', code: 'MO'},
-  {name: 'Montana', code: 'MT'},
-  {name: 'Nebraska', code: 'NE'},
-  {name: 'Nevada', code: 'NV'},
-  {name: 'New Hampshire', code: 'NH'},
-  {name: 'New Jersey', code: 'NJ'},
-  {name: 'New Mexico', code: 'NM'},
-  {name: 'New York', code: 'NY'},
-  {name: 'North Carolina', code: 'NC'},
-  {name: 'North Dakota', code: 'ND'},
-  {name: 'Ohio', code: 'OH'},
-  {name: 'Oklahoma', code: 'OK'},
-  {name: 'Oregon', code: 'OR'},
-  {name: 'Pennsylvania', code: 'PA'},
-  {name: 'Rhode Island', code: 'RI'},
-  {name: 'South Carolina', code: 'SC'},
-  {name: 'South Dakota', code: 'SD'},
-  {name: 'Tennessee', code: 'TN'},
-  {name: 'Texas', code: 'TX'},
-  {name: 'Utah', code: 'UT'},
-  {name: 'Vermont', code: 'VT'},
-  {name: 'Virginia', code: 'VA'},
-  {name: 'Washington', code: 'WA'},
-  {name: 'West Virginia', code: 'WV'},
-  {name: 'Wisconsin', code: 'WI'},
-  {name: 'Wyoming', code: 'WY'}
+  { name: 'Alabama', code: 'AL' },
+  { name: 'Alaska', code: 'AK' },
+  { name: 'Arizona', code: 'AZ' },
+  { name: 'Arkansas', code: 'AR' },
+  { name: 'California', code: 'CA' },
+  { name: 'Colorado', code: 'CO' },
+  { name: 'Connecticut', code: 'CT' },
+  { name: 'Delaware', code: 'DE' },
+  { name: 'District of Columbia', code: 'DC' },
+  { name: 'Florida', code: 'FL' },
+  { name: 'Georgia', code: 'GA' },
+  { name: 'Hawaii', code: 'HI' },
+  { name: 'Idaho', code: 'ID' },
+  { name: 'Illinois', code: 'IL' },
+  { name: 'Indiana', code: 'IN' },
+  { name: 'Iowa', code: 'IA' },
+  { name: 'Kansas', code: 'KS' },
+  { name: 'Kentucky', code: 'KY' },
+  { name: 'Louisiana', code: 'LA' },
+  { name: 'Maine', code: 'ME' },
+  { name: 'Maryland', code: 'MD' },
+  { name: 'Massachusetts', code: 'MA' },
+  { name: 'Michigan', code: 'MI' },
+  { name: 'Minnesota', code: 'MN' },
+  { name: 'Mississippi', code: 'MS' },
+  { name: 'Missouri', code: 'MO' },
+  { name: 'Montana', code: 'MT' },
+  { name: 'Nebraska', code: 'NE' },
+  { name: 'Nevada', code: 'NV' },
+  { name: 'New Hampshire', code: 'NH' },
+  { name: 'New Jersey', code: 'NJ' },
+  { name: 'New Mexico', code: 'NM' },
+  { name: 'New York', code: 'NY' },
+  { name: 'North Carolina', code: 'NC' },
+  { name: 'North Dakota', code: 'ND' },
+  { name: 'Ohio', code: 'OH' },
+  { name: 'Oklahoma', code: 'OK' },
+  { name: 'Oregon', code: 'OR' },
+  { name: 'Pennsylvania', code: 'PA' },
+  { name: 'Rhode Island', code: 'RI' },
+  { name: 'South Carolina', code: 'SC' },
+  { name: 'South Dakota', code: 'SD' },
+  { name: 'Tennessee', code: 'TN' },
+  { name: 'Texas', code: 'TX' },
+  { name: 'Utah', code: 'UT' },
+  { name: 'Vermont', code: 'VT' },
+  { name: 'Virginia', code: 'VA' },
+  { name: 'Washington', code: 'WA' },
+  { name: 'West Virginia', code: 'WV' },
+  { name: 'Wisconsin', code: 'WI' },
+  { name: 'Wyoming', code: 'WY' },
 ];
 
-
 // API URL
-const apiURL = 'https://covidtracking.com/api/v1/states/current.json';
-
+const apiURL = 'https://api.covidtracking.com/v1/states/current.json';
 
 // General functions
 const getData = (apiURL) => $.ajax(apiURL);
 
 const getTotalCount = (arr, attr) => {
   let total = 0;
-  arr.forEach(row => total += row[attr]);
+  arr.forEach((row) => (total += row[attr]));
   return total;
 };
 
 const extractRelevantData = (jsonData, states, targetKeys) => {
-  states.forEach(state => {
-    const jsonState = jsonData.filter(row => row.state == state.code);
+  states.forEach((state) => {
+    const jsonState = jsonData.filter((row) => row.state == state.code);
     if (jsonState.length == 1) {
-      targetKeys.forEach(field => state[field] = jsonState[0][field]);
+      targetKeys.forEach((field) => (state[field] = jsonState[0][field]));
     } else {
-      targetKeys.forEach(field => state[field] = null);
+      targetKeys.forEach((field) => (state[field] = null));
     }
   });
 };
 
 const addCommaSeparator = (num) => {
   // Source: https://bit.ly/3fvdMWD
-  return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 };
 
-String.prototype.toTitleCase = function() {
+String.prototype.toTitleCase = function () {
   return this[0].toUpperCase() + this.slice(1).toLowerCase();
 };
-
 
 // DOM functions
 const createSummary = (confirmedCount, deathsCount) => {
@@ -104,10 +101,21 @@ const createSummary = (confirmedCount, deathsCount) => {
   const $deathsCount = $('<p>').addClass('deaths').text(deathsCount);
 
   // Add content to DOM
-  $targetDiv.append($confirmedHeader, $confirmedCount, $deathsHeader, $deathsCount);
+  $targetDiv.append(
+    $confirmedHeader,
+    $confirmedCount,
+    $deathsHeader,
+    $deathsCount
+  );
 };
 
-const createAttrByState = (states, $target, targetKey, description, spanClass='') => {
+const createAttrByState = (
+  states,
+  $target,
+  targetKey,
+  description,
+  spanClass = ''
+) => {
   // Locate target
   const $targetDiv = $target;
   $targetDiv.addClass('attr-by-state');
@@ -122,7 +130,7 @@ const createAttrByState = (states, $target, targetKey, description, spanClass=''
   const $contentDiv = $('<div>');
   sortedStates = JSON.parse(JSON.stringify(states));
   sortedStates = states.sort((a, b) => b[targetKey] - a[targetKey]);
-  sortedStates.forEach(state => {
+  sortedStates.forEach((state) => {
     const count = addCommaSeparator(state[targetKey]);
     const $newRow = $('<p>');
     $newRow.text(`${state.name}`);
@@ -132,7 +140,7 @@ const createAttrByState = (states, $target, targetKey, description, spanClass=''
   $targetDiv.append($contentDiv);
 };
 
-const createImgCard = ($target, headerText, imgSrc='', imgAlt='') => {
+const createImgCard = ($target, headerText, imgSrc = '', imgAlt = '') => {
   // Locate target
   const $targetDiv = $target;
 
@@ -157,30 +165,41 @@ const render = async () => {
   createSummary(currentConfirmed, currentDeaths);
 
   // Card 2: Confirmed by State
-  createAttrByState(states, $('#confirmed-by-state'), 'positive', 'confirmed', 'infected');
+  createAttrByState(
+    states,
+    $('#confirmed-by-state'),
+    'positive',
+    'confirmed',
+    'infected'
+  );
 
   // Card 3: Deaths by State
   createAttrByState(states, $('#deaths-by-state'), 'death', 'deaths', 'deaths');
 
   // Card: Choropleth Map
   createImgCard(
-    $('#choropleth-map'), 'Choropleth Map', './images/state_timeline.gif',
+    $('#choropleth-map'),
+    'Choropleth Map',
+    './images/state_timeline.gif',
     'US choropleth map of confirmed COVID-19 cases'
   );
 
   // Card: SIR Model
   createImgCard(
-    $('#model'), 'SIR Model', './images/projection.png',
+    $('#model'),
+    'SIR Model',
+    './images/projection.png',
     'SIR model for COVID-19'
   );
 
   // Card: SIR model fit
   createImgCard(
-    $('#model-fit'), 'SIR Model Fit', './images/fit.png',
+    $('#model-fit'),
+    'SIR Model Fit',
+    './images/fit.png',
     'SIR model fit for COVID-19'
   );
 };
-
 
 $(() => {
   // Render page
@@ -190,12 +209,12 @@ $(() => {
   // Drag and drop functionality
   // Source: https://bit.ly/2YQm4l9
   $('.card').draggable({
-    containment: '#container'
+    containment: '#container',
   });
 
   $('.slot').droppable({
     tolerance: 'pointer',
-    drop: function(event, ui) {
+    drop: function (event, ui) {
       // Get targets
       const $droppedItem = ui.draggable;
       const $oldParent = $droppedItem.parent();
@@ -203,8 +222,8 @@ $(() => {
       const $oldChild = $(this).children().eq(0);
 
       // Switch the positions of the content divs
-      $oldChild.detach().css({top: 0, left: 0}).appendTo($oldParent);
-      $droppedItem.detach().css({top: 0, left: 0}).appendTo($newParent);
-    }
+      $oldChild.detach().css({ top: 0, left: 0 }).appendTo($oldParent);
+      $droppedItem.detach().css({ top: 0, left: 0 }).appendTo($newParent);
+    },
   });
 });
