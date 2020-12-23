@@ -42,9 +42,7 @@ def main():
     }
 
     # Input parameters
-    # recovery_rate = 1 / 19.6
-    recovery_rate = 1 / 6
-    # recovery_rate = 1 / 4
+    recovery_rate = 1 / 7
 
     # Solver
     estimated_infection_rate = solver(
@@ -60,7 +58,7 @@ def main():
     project(
         population=total_us_population,
         initial=initial,
-        days=400,
+        days=300,
         infection_rate=estimated_infection_rate,
         recovery_rate=recovery_rate,
         start_date=start_date,
