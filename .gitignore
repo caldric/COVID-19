@@ -9,3 +9,5 @@ model_oh.py
 *.swp
 *.ipynb
 venv
+images/county_timeline/
+images/state_timeline/
