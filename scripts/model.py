@@ -42,7 +42,7 @@ def main():
     }
 
     # Input parameters
-    recovery_rate = 1 / 7
+    recovery_rate = 1 / 12
 
     # Solver
     estimated_infection_rate = solver(
